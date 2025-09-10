@@ -1,0 +1,156 @@
+<!-- src/app/home/home.component.html -->
+<app-header></app-header>
+
+<div class="container mt-4 mb-5">
+    <!-- Intro Section -->
+    <div class="intro-section text-center mb-4">
+        <h1>HOANG NAM SHOP XIN CHÀO</h1>
+        <p>Hãy khám phá các sản phẩm tuyệt vời của chúng tôi</p>
+    </div>
+
+    <!-- Search, Filter & Sort Section -->
+    <div class="search-filter-sort-box row g-3 mb-4 align-items-center">  
+
+        <div class="search-input-wrapper col-lg-5 col-md-12"> 
+            <label for="searchInput" class="visually-hidden">Tìm kiếm sản phẩm</label>
+            <input type="text" id="searchInput" class="form-control search-input" placeholder="Tìm kiếm sản phẩm..."
+                (input)="onSearchChange($event)">
+        </div>
+
+        <!-- Lọc Loại: Chiếm ít hơn trên lg, nửa màn hình trên md -->
+        <div class="category-select-wrapper col-lg-3 col-md-6"> 
+            <label for="category" class="visually-hidden">Lọc theo danh mục</label>
+            <select id="category" class="form-select product-category" (change)="onCategoryChange($event)">
+                <option [ngValue]="null" selected>-- Tất cả danh mục -- </option>
+                <option *ngFor="let type of productTypes" [value]="type.serialId"> {{ type.name }} </option>
+            </select>
+        </div>
+
+        <!-- Sắp xếp: Chiếm ít hơn trên lg, nửa màn hình trên md -->
+        <div class="sort-select-wrapper col-lg-4 col-md-6"> 
+            <label for="sortOptions" class="visually-hidden">Sắp xếp sản phẩm</label>
+            <select id="sortOptions" class="form-select product-sort" (change)="onSortChange($event)">
+                <!-- Các option sắp xếp -->
+                <option value="name,asc" [selected]="sortField === 'name' && sortDirection === 'asc'">Sắp Xếp Dựa Vào Tên (A-Z)</option>
+                <option value="name,desc" [selected]="sortField === 'name' && sortDirection === 'desc'">Sắp Xếp Dựa Vào Tên (Z-A)
+                </option>
+                <option value="price,asc" [selected]="sortField === 'price' && sortDirection === 'asc'">Sắp Xếp Dựa Vào Giá (Thấp đến
+                    Cao)</option>
+                <option value="price,desc" [selected]="sortField === 'price' && sortDirection === 'desc'">Sắp Xếp Dựa Vào Giá (Cao đến
+                    Thấp)</option>
+            </select>
+        </div>
+
+    </div>
+
+    <!-- Trạng thái Loading -->
+    <div *ngIf="isLoading" class="text-center p-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Đang tải...</span>
+        </div>
+        <p class="mt-2">Đang tải sản phẩm...</p>
+    </div>
+
+    <!-- Hiển thị lỗi nếu có -->
+    <div *ngIf="errorMessage && !isLoading" class="alert alert-warning" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i> {{ errorMessage }}
+        <button type="button" class="btn-close float-end" aria-label="Close" (click)="errorMessage = null"></button>
+    </div>
+
+    <!-- Danh sách sản phẩm -->
+    <div *ngIf="!isLoading && !errorMessage">
+        <div class="row g-4 product-grid-row">
+            <!-- Nếu không có sản phẩm -->
+            <div *ngIf="products.length === 0" class="col-12 text-center text-muted fst-italic p-5">
+                <p>Không tìm thấy sản phẩm nào.</p>
+            </div>
+
+            <!-- Lặp qua sản phẩm -->
+            <div class="col-lg-4 col-md-6" *ngFor="let product of products">
+                <div class="product-item card h-100 shadow-sm">
+                    <a [routerLink]="['/product', product.serialId]" class="text-decoration-none product-image-link">
+                        <img [src]="getProductImageUrl(product.imagePath)" alt="{{ product.name }}"
+                            class="product-image card-img-top">
+                    </a>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="product-name card-title">
+                            <a [routerLink]="['/product', product.serialId]" class="text-decoration-none text-dark">
+                                {{ product.name }}
+                            </a>
+                        </h5>
+                        <p *ngIf="product.size" class="product-size card-text text-muted small mb-1">
+                            Kích thước: {{ product.size }}
+                        </p>
+                        <p class="product-price fw-bold mb-2">
+                            {{ product.price | number:'1.0-0' }} VNĐ
+                            <span class="discount-badge ms-2">
+                                20%              <!-- tạm thời cho thẳng giảm giá 20% -->
+                            </span>
+                        </p>
+                        <div class="product-rating mb-2">
+                            <small class="text-warning">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star-half-stroke"></i>
+                                <i class="fa-regular fa-star"></i>
+                            </small>
+                            <small class="text-muted ms-1">(4.5)</small>
+                        </div>
+                        <div class="product-location text-muted small mb-3">
+                            <i class="fas fa-map-marker-alt me-1"></i> 
+                            TP. Hồ Chí Minh
+                       </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0 pt-0">
+                         <!-- Sử dụng *ngIf để kiểm tra số lượng -->
+                        <ng-container *ngIf="product.quantity > 0; else outOfStock">
+                            <!-- HIỂN THỊ NÚT BẤM KHI CÒN HÀNG -->
+                            <div class="product-actions d-flex justify-content-between">
+                                <button class="btn btn-sm btn-outline-primary flex-grow-1 me-1" (click)="addToCart(product)">
+                                    <i class="fas fa-cart-plus me-1"></i> Thêm giỏ hàng
+                                </button>
+                                <button class="btn btn-sm btn-success flex-grow-1 ms-1" (click)="buyNow(product)">
+                                    Mua ngay
+                                </button>
+                            </div>
+                        </ng-container>
+
+                        <!-- Template sẽ hiển thị khi điều kiện *ngIf là false -->
+                        <ng-template #outOfStock>
+                            <!-- HIỂN THỊ THÔNG BÁO HẾT HÀNG -->
+                            <div class="product-out-of-stock text-center text-danger fw-medium py-2">
+                                Sản Phẩm Đã Cháy hàng
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div> <!-- /col sản phẩm -->
+        </div> <!-- /row sản phẩm -->
+
+        <!-- Phân trang -->
+        <nav *ngIf="totalPages > 1" aria-label="Product pagination"
+            class="mt-5 d-flex justify-content-center pagination-container">
+            <ul class="pagination pagination-sm shadow-sm">
+                <li class="page-item" [class.disabled]="currentPage === 0">
+                    <a class="page-link" href="javascript:void(0)" (click)="goToPage(0)" title="Trang đầu">««</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === 0">
+                    <a class="page-link" href="javascript:void(0)" (click)="prevPage()" title="Trang trước">«</a>
+                </li>
+                <li class="page-item disabled">
+                    <span class="page-link page-info">Trang {{ currentPage + 1 }} / {{ totalPages }}</span>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage >= totalPages - 1">
+                    <a class="page-link" href="javascript:void(0)" (click)="nextPage()" title="Trang sau">»</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage >= totalPages - 1">
+                    <a class="page-link" href="javascript:void(0)" (click)="goToPage(totalPages - 1)"
+                        title="Trang cuối">»»</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<app-footer></app-footer>

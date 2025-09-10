@@ -1,0 +1,111 @@
+/* sidebar.component.css */
+
+:host {
+  display: block;
+  /* Đảm bảo component chiếm không gian */
+  height: 100vh;
+  /* Chiều cao 100% viewport height */
+  /* Hoặc height: 100%; nếu container cha có chiều cao xác định */
+}
+
+.sidebar-container {
+  background-color: #4F4F4F;
+  /* Màu nền xám tối giống ảnh */
+  color: #ffffff;
+  /* Màu chữ trắng */
+  padding: 25px 15px;
+  /* Padding trên dưới 25px, trái phải 15px */
+  height: 100%;
+  /* Chiếm toàn bộ chiều cao của :host */
+  width: 260px;
+  /* Độ rộng cố định cho sidebar (điều chỉnh nếu cần) */
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  /* Tính cả padding vào width/height */
+}
+
+.sidebar-title {
+  font-size: 1.6rem;
+  /* Cỡ chữ to hơn cho tiêu đề */
+  font-weight: bold;
+  margin-bottom: 30px;
+  /* Khoảng cách dưới tiêu đề */
+  padding-left: 10px;
+  /* Chút padding trái cho tiêu đề */
+  line-height: 1.3;
+}
+
+.sidebar-nav {
+  list-style: none;
+  /* Bỏ dấu chấm đầu dòng */
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+  /* Cho phép list này lớn lên để đẩy nút Thoát xuống (nếu cần) */
+}
+
+.sidebar-nav li {
+  margin-bottom: 10px;
+  /* Khoảng cách giữa các mục */
+}
+
+.sidebar-nav li a {
+  display: flex;
+  /* Sắp xếp icon và text trên một hàng */
+  align-items: center;
+  /* Căn giữa icon và text theo chiều dọc */
+  padding: 12px 15px;
+  /* Padding bên trong liên kết */
+  color: #ffffff;
+  /* Màu chữ trắng */
+  text-decoration: none;
+  /* Bỏ gạch chân */
+  border-radius: 8px;
+  /* Bo góc nhẹ */
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  /* Hiệu ứng chuyển đổi mượt */
+  cursor: pointer;
+  /* Đổi con trỏ thành bàn tay */
+}
+
+.sidebar-nav li a i {
+  margin-right: 12px;
+  /* Khoảng cách giữa icon và text */
+  font-size: 1.1rem;
+  /* Kích thước icon (điều chỉnh nếu cần) */
+  width: 20px;
+  /* Đảm bảo icon có độ rộng cố định (cùng với fa-fw) */
+  text-align: center;
+}
+
+.sidebar-nav li a span {
+  font-size: 1rem;
+  /* Cỡ chữ cho text */
+}
+
+/* Kiểu khi rê chuột qua */
+.sidebar-nav li a:not(.active-link):hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  /* Nền hơi sáng lên khi hover */
+}
+
+/* Kiểu cho mục đang được chọn (active) */
+.sidebar-nav li a.active-link {
+  background-color: #008C9E;
+  /* Màu xanh teal giống ảnh */
+  color: #ffffff;
+  font-weight: 500;
+  /* Có thể làm chữ đậm hơn chút */
+}
+
+/* Đẩy nút Thoát xuống dưới cùng (nếu cần) */
+.sidebar-nav .logout-item {
+  margin-top: auto;
+}
+
+/* CSS cho nút Thoát để trông giống các mục khác */
+.sidebar-nav .logout-item a:hover {
+  background-color: rgba(217, 83, 79, 0.2);
+  /* Màu nền đỏ nhẹ khi hover Thoát */
+}

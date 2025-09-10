@@ -1,0 +1,124 @@
+// Giữ các nút hành động trên một hàng và có khoảng cách
+.actions-cell {
+  white-space: nowrap; // Ngăn các nút xuống dòng
+  min-width: 100px; // Đảm bảo đủ chỗ cho các nút cơ bản
+}
+
+.actions-cell .btn {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.content {
+  padding-left: 40px;
+  /* Dịch nội dung qua phải */
+}
+
+// Thêm style riêng cho status nếu cần
+.form-select {
+  min-width: 180px; // Đảm bảo select đủ rộng
+}
+
+.content h2 {
+  text-align: center;
+  color: whitesmoke;
+}
+
+.col-md-2 {
+  margin-left: -12px;
+  margin-top: -24px;
+  margin-bottom: -130px;
+}
+
+//selectstatus
+.selectstatus {
+  font-size: 24px;
+}
+
+.texcenter {
+  width: 60px;
+}
+
+.actions-column .btn-icon {
+  // Các style cũ cho nút tròn:
+  border-radius: 50%;
+  width: 34px; // Đảm bảo kích thước cố định
+  height: 34px;
+  padding: 0;
+  display: inline-flex; // Để căn icon bên trong nút
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  line-height: 1;
+  border: none;
+  transition: opacity 0.2s ease-in-out;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+// Style cho modal (ví dụ)
+.modal-body .text-danger {
+  // Hiển thị lỗi validation
+  font-size: 0.8rem;
+}
+
+.modal-footer .btn .spinner-border {
+  // Spinner trong nút lưu
+  vertical-align: text-bottom;
+}
+
+//phân trang
+.pagination-container {
+  // Style cho container chứa ul.pagination
+  margin-top: 1.5rem; // Khoảng cách phía trên
+}
+
+.pagination {
+  .page-item {
+
+    .page-link {
+      color: #0d6efd; // Màu chữ link
+      border-radius: 0.25rem; // Bo góc nhẹ cho từng link (nếu pagination-sm không đủ)
+
+      &:focus {
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25); // Thêm hiệu ứng focus rõ hơn
+      }
+
+      // Style cho icon mũi tên
+      span[aria-hidden="true"] {
+        font-weight: 600; // Cho mũi tên đậm hơn chút
+      }
+    }
+
+    // Style cho item bị vô hiệu hóa
+    &.disabled .page-link {
+      color: #6c757d;
+      background-color: #e9ecef;
+      border-color: #dee2e6;
+      cursor: not-allowed; // Đổi con trỏ chuột
+    }
+
+    // Style cho phần hiển thị text "Trang X / Y"
+    .page-info {
+      color: #495057; // Màu chữ tối hơn disabled link
+      background-color: #f8f9fa; // Màu nền khác biệt nhẹ
+      // Có thể thêm border giống page-link nếu muốn đồng bộ khung
+      // border: 1px solid #dee2e6;
+      padding-left: 0.8rem; // Tăng padding ngang cho dễ nhìn
+      padding-right: 0.8rem;
+      cursor: default; // Con trỏ mặc định
+    }
+  }
+
+  // Bỏ bo góc ở đầu và cuối nếu muốn thành một khối liền
+  .page-item:first-child .page-link {
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+  }
+  .page-item:last-child .page-link {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+  }
+}

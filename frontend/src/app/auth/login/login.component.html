@@ -1,0 +1,130 @@
+<app-header></app-header>
+
+<div class="container d-flex justify-content-center align-items-center">
+  <div class="login-form my-5 p-4 p-md-5 card shadow-sm">
+    <h2 class="login-header text-center mb-4">Đăng nhập</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <!-- Ghi tên tài khoản -->
+      <div class="form-group mb-3">
+        <label for="username" class="form-label">Tên đăng nhập</label>
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          formControlName="username"
+          [ngClass]="{
+            'is-invalid':
+              loginForm.get('username')?.invalid &&
+              loginForm.get('username')?.touched
+          }"
+        />
+        <div
+          *ngIf="
+            loginForm.get('username')?.invalid &&
+            loginForm.get('username')?.touched
+          "
+          class="invalid-feedback small d-block"
+        >
+          Vui lòng nhập tên đăng nhập.
+        </div>
+      </div>
+
+      <!-- Ghi mật khẩu -->
+      <div class="form-group mb-3 password-field position-relative">
+        <label for="password" class="form-label">Mật khẩu</label>
+        <input
+          type="password"
+          placeholder="Ít nhất 6 ký tự"
+          class="form-control"
+          id="password"
+          formControlName="password"
+          [ngClass]="{
+            'is-invalid':
+              loginForm.get('password')?.invalid &&
+              loginForm.get('password')?.touched
+          }"
+          #passwordInput
+        />
+        <i
+          class="password-toggle fas fa-eye-slash position-absolute"
+          (click)="togglePasswordVisibility(passwordInput, eyeIcon)"
+          #eyeIcon
+        ></i>
+        <!-- THÊM thông báo lỗi -->
+        <div
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            loginForm.get('password')?.touched
+          "
+          class="invalid-feedback small d-block"
+        >
+          Vui lòng nhập mật khẩu.
+        </div>
+      </div>
+
+      <!-- Ghi nhớ mật khẩu & Quên mật khẩu -->
+      <div class="form-group mb-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="remember" />
+            <label class="form-check-label small" for="remember">
+              Ghi nhớ đăng nhập
+            </label>
+          </div>
+          <a [routerLink]="['/forgot-password']" class="register-link small"
+            >Quên mật khẩu?
+          </a>
+        </div>
+      </div>
+
+      <!-- Nút Đăng nhập -->
+      <div class="d-grid mb-3">
+        <!-- Thêm d-grid, mb-3 -->
+        <button
+          type="submit"
+          class="login-button btn btn-primary"
+          [disabled]="loginForm.invalid || isLoading || isRetrying"
+        >
+          <!-- Thêm btn, btn-primary -->
+          <span
+            *ngIf="isLoading"
+            class="spinner-border spinner-border-sm me-2"
+            role="status"
+            aria-hidden="true"
+          ></span>
+          {{ isLoading || isRetrying ? "Đang xử lý..." : "Đăng nhập" }}
+        </button>
+      </div>
+
+      <!--HIỂN THỊ LỖI CHÍNH -->
+      <div
+        *ngIf="errorMessage && !isRetrying"
+        class="alert alert-danger mt-3 p-2 text-center small"
+        role="alert"
+      >
+        {{ errorMessage }}
+      </div>
+
+      <!--HIỂN THỊ THÔNG BÁO ĐẾM NGƯỢC -->
+      <div
+        *ngIf="isRetrying && retryErrorMessage"
+        class="alert alert-warning mt-3 p-2 text-center small"
+        role="alert"
+      >
+        {{ retryErrorMessage }}
+      </div>
+
+      <p class="text-center small txtin4">
+        Bạn chưa đăng ký?
+        <span>
+          <a class="register-link" [routerLink]="['/register']">
+            Tạo tài khoản
+          </a>
+        </span
+        >
+      </p>
+    </form>
+  </div>
+</div>
+
+<app-footer></app-footer>

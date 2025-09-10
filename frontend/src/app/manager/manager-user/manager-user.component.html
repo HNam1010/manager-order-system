@@ -1,0 +1,239 @@
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-12 col-md-2 sidebar-container-wrapper">
+            <app-manager-sidebar></app-manager-sidebar>
+        </div>
+
+        <!-- Nội dung chính -->
+        <div class="col-12 col-md-10 content">
+            <h2 class="page-title mb-4">QUẢN LÝ NHÂN VIÊN</h2>
+
+            <!-- Nút thêm -->
+            <div class="d-flex justify-content-end align-items-center mb-3">
+                <button class="btn btn-primary btn-add" (click)="addUser()">
+                    <i class="fas fa-plus me-2"></i>Thêm Nhân viên
+                </button>
+            </div>
+
+            <!-- Hiển thị Loading -->
+            <div *ngIf="isLoading" class="text-center p-4">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="text-muted mt-2">Đang tải dữ liệu...</p>
+            </div>
+
+            <!-- Hiển thị Lỗi -->
+            <div *ngIf="errorMessage && !isLoading" class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+                <button class="btn btn-sm btn-link text-danger" (click)="loadUsers()">Thử lại</button>
+            </div>
+
+            <!-- Bảng dữ liệu -->
+            <div *ngIf="!isLoading && !errorMessage" class="table-responsive">
+                <table class="table table-bordered table-hover shadow-sm custom-table">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>ID</th> 
+                            <th>Username</th> 
+                            <th>Email</th>
+                            <th>Ngày Sinh</th> 
+                            <th>Vai trò</th>
+                            <th class="text-center actions-column">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- Dữ liệu nhân viên -->
+                        <tr *ngFor="let user of users; let i = index">
+                            <!--Hiển thị user.id -->
+                            <th scope="row" class="text-center align-middle">{{ user.id }}</th>
+                            <!--Hiển thị user.username -->
+                            <td class="align-middle">{{ user.username }}</td>
+                            <td class="align-middle">{{ user.email }}</td>
+                            <!-- Bỏ cột Ngày sinh nếu không hiển thị -->
+                            <td class="align-middle text-center">{{ user.birthDay | date:'dd/MM/yyyy' }}</td>
+                            <td class="align-middle text-center"> <!--Hiển thị role -->
+                                <span *ngIf="user.roles && user.roles.length > 0" class="badge bg-info text-dark">
+                                    {{ user.roles[0] }} <!-- Hiển thị role đầu tiên -->
+                                </span>
+                                <span *ngIf="!user.roles || user.roles.length === 0">N/A</span>
+                            </td>
+                            <td class="text-center align-middle actions-column">
+                                <button class="btn btn-sm btn-icon btn-edit me-2 shadow-sm" title="Sửa"
+                                    (click)="editUser(user)">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <!--Truyền user.id vào deleteUser -->
+                                <button class="btn btn-sm btn-icon btn-delete shadow-sm" title="Xóa"
+                                    (click)="deleteUser(user.id)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Phân trang -->
+            <nav *ngIf="!isLoading && totalPages > 0" aria-label="Order pagination"
+                class="mt-4 d-flex justify-content-center pagination-container">
+                <!-- Thêm class pagination-container -->
+                <ul class="pagination pagination-sm shadow-sm"> 
+
+                    <!-- Nút Trang Đầu -->
+                    <li class="page-item" [class.disabled]="currentPage === 0">
+                        <a class="page-link" href="javascript:void(0)" aria-label="First" (click)="goToPage(0)"
+                            title="Trang đầu">
+                            <span aria-hidden="true">««</span>
+                        </a>
+                    </li>
+
+                    <!-- Nút Trang Trước -->
+                    <li class="page-item" [class.disabled]="currentPage === 0">
+                        <a class="page-link" href="javascript:void(0)" aria-label="Previous" (click)="prevPage()"
+                            title="Trang trước">
+                            <span aria-hidden="true">«</span>
+                        </a>
+                    </li>
+
+                    <!-- Hiển thị thông tin trang hiện tại -->
+                    <li class="page-item disabled">
+                        <span class="page-link page-info">
+                            <!-- Dùng span cho text không click được, thêm class page-info -->
+                            Trang {{ currentPage + 1 }} / {{ totalPages }}
+                        </span>
+                    </li>
+
+                    <!-- Nút Trang Sau -->
+                    <li class="page-item" [class.disabled]="currentPage >= totalPages - 1">
+                        <a class="page-link" href="javascript:void(0)" aria-label="Next" (click)="nextPage()"
+                            title="Trang sau">
+                            <span aria-hidden="true">»</span>
+                        </a>
+                    </li>
+
+                    <!-- Nút Trang Cuối -->
+                    <li class="page-item" [class.disabled]="currentPage >= totalPages - 1">
+                        <a class="page-link" href="javascript:void(0)" aria-label="Last"
+                            (click)="goToPage(totalPages - 1)" title="Trang cuối">
+                            <span aria-hidden="true">»»</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <app-footer></app-footer>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Modal cho Add/Edit User -->
+<div #userModal class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <!-- backdrop static để không đóng khi click ra ngoài -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userModalLabel">{{ isEditMode ? 'Sửa Người dùng' : 'Thêm Người dùng' }}</h5>
+                <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Reactive Form -->
+                <form [formGroup]="userForm" (ngSubmit)="saveUser()">
+
+                    <!-- Username (Chỉ cho phép nhập khi thêm mới) -->
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Tên đăng nhập <span
+                                class="text-danger">*</span></label>
+                        <!--formControlName -->
+                        <input type="text" id="username" class="form-control" formControlName="username"
+                            [readonly]="isEditMode">
+                        <div *ngIf="userForm.controls['username'].invalid && (userForm.controls['username'].dirty || userForm.controls['username'].touched)"
+                            class="text-danger small mt-1">
+                            <div *ngIf="userForm.controls['username'].errors?.['required']">Tên đăng nhập là bắt buộc.
+                            </div>
+                            <div *ngIf="userForm.controls['username'].errors?.['minlength']">Tối thiểu 3 ký tự.</div>
+                            <div *ngIf="userForm.controls['username'].errors?.['maxlength']">Tối đa 50 ký tự.</div>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                        <input type="email" id="email" class="form-control" formControlName="email">
+                        <div *ngIf="userForm.controls['email'].invalid && (userForm.controls['email'].dirty || userForm.controls['email'].touched)"
+                            class="text-danger small mt-1">
+                            <div *ngIf="userForm.controls['email'].errors?.['required']">Email là bắt buộc.</div>
+                            <div *ngIf="userForm.controls['email'].errors?.['email']">Email không hợp lệ.</div>
+                        </div>
+                    </div>
+
+                    <!-- Mật khẩu (Chỉ bắt buộc khi thêm mới) -->
+                    <div class="mb-3" *ngIf="!isEditMode">
+                        <!-- Chỉ hiển thị khi thêm mới -->
+                        <label for="password" class="form-label">Mật khẩu <span class="text-danger">*</span></label>
+                        <input type="password" id="password" class="form-control" formControlName="password">
+                        <div *ngIf="userForm.controls['password'].invalid && (userForm.controls['password'].dirty || userForm.controls['password'].touched)"
+                            class="text-danger small mt-1">
+                            <div *ngIf="userForm.controls['password'].errors?.['required']">Mật khẩu là bắt buộc.</div>
+                            <!-- Thêm validator minLength nếu cần -->
+                        </div>
+                    </div>
+
+                    <!-- Ngày sinh -->
+                    <div class="mb-3">
+                        <label for="birthDay" class="form-label">Ngày sinh</label>
+                        <input type="date" id="birthDay" class="form-control" formControlName="birthDay">
+                        <!-- Thêm validator nếu ngày sinh bắt buộc hoặc cần định dạng -->
+                    </div>
+
+                    <!-- Địa chỉ -->
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Địa chỉ</label>
+                        <input type="text" id="address" class="form-control" formControlName="address">
+                    </div>
+
+                    <!-- Quyền (User Type) - Cần lấy danh sách UserType từ backend -->
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Vai trò <span class="text-danger">*</span></label>
+                        <!--formControlName="role", lặp qua mảng roles -->
+                        <select id="role" class="form-select" formControlName="role"
+                            [ngClass]="{'is-invalid': userForm.get('role')?.invalid && userForm.get('role')?.touched }">
+                            <option [ngValue]="null" disabled selected>-- Chọn vai trò --</option>
+                            <!-- Thêm selected -->
+                            <!--Lặp qua mảng 'roles' (đã load từ API) -->
+                            <!--[value] hoặc [ngValue] là role.name (string) -->
+                            <option *ngFor="let role of roles" [value]="role.name">
+                                {{ role.name }} <!-- Hiển thị tên Role -->
+                            </option>
+                        </select>
+                        <!--Kiểm tra lỗi cho form control 'role' -->
+                        <div *ngIf="userForm.get('role')?.invalid && (userForm.get('role')?.dirty || userForm.get('role')?.touched)"
+                            class="text-danger small mt-1 d-block"> <!-- Thêm d-block -->
+                            <div *ngIf="userForm.get('role')?.errors?.['required']">Vai trò là bắt buộc.</div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <!-- Nút Hủy dùng hàm closeModal -->
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">Hủy</button>
+                <!-- Nút Lưu gọi hàm saveUser qua ngSubmit của form -->
+                <button type="submit" class="btn btn-primary" (click)="saveUser()"
+                    [disabled]="userForm.invalid || isSaving">
+                    <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2" role="status"
+                        aria-hidden="true"></span>
+                    {{ isEditMode ? 'Lưu thay đổi' : 'Thêm mới' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

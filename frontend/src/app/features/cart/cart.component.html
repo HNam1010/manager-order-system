@@ -1,0 +1,237 @@
+<app-header></app-header>
+
+<div class="container mt-4 mb-5">
+    <div class="page-header text-center mb-4">
+        <h1>Giỏ hàng & Thanh toán</h1>
+        <p>Kiểm tra sản phẩm và hoàn tất thông tin đặt hàng.</p>
+    </div>
+
+    <!-- Loading Toàn Trang -->
+    <div *ngIf="isLoading && !cartItems.length" class="text-center p-5">
+        <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Đang tải...</span></div>
+        <p class="mt-2">Đang tải giỏ hàng...</p>
+    </div>
+
+    <!-- Error Tổng Thể -->
+    <div *ngIf="errorMessage && !isLoading && !cartItems.length" class="alert alert-danger" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i> {{ errorMessage }}
+        <button type="button" class="btn-close float-end" aria-label="Close" (click)="errorMessage = null"></button>
+    </div>
+
+    <!-- Nội dung chính khi có dữ liệu hoặc đang loading nhưng có item -->
+    <form [formGroup]="checkoutForm" id="checkoutForm" (ngSubmit)="submitOrder()">
+        <div class="row g-lg-5" *ngIf="!isLoading || cartItems.length > 0">
+
+            <!-- CỘT BÊN TRÁI (Sản phẩm & Thông tin giao hàng) -->
+            <div class="col-lg-7 col-xl-8">
+
+                <!-- Box Sản phẩm trong giỏ -->
+                <div class="cart-items-box mb-4"> <!-- Thêm một div bao ngoài nếu muốn -->
+                    <h2 class="cart-section-header mb-3">Sản phẩm trong giỏ</h2>
+
+                    <!-- Trường hợp giỏ hàng trống -->
+                    <div *ngIf="!isLoading && cartItems.length === 0 && !errorMessage"
+                        class="alert alert-info text-center">
+                        Giỏ hàng của bạn đang trống. <a routerLink="/home" class="alert-link">Tiếp tục mua sắm?</a>
+                    </div>
+
+                    <!-- Bảng sản phẩm -->
+                    <div class="cart-table-wrapper table-responsive shadow-sm rounded" *ngIf="cartItems.length > 0">
+                        <table class="table cart-table mb-0 align-middle">
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th scope="col" class="product-col text-start">Sản phẩm</th>
+                                    <th scope="col" class="price-col text-end">Đơn giá</th>
+                                    <th scope="col" class="quantity-col">Số lượng</th>
+                                    <th scope="col" class="total-col text-end">Tổng cộng</th>
+                                    <th scope="col" class="action-col">Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of cartItems" class="cart-item-row">
+                                    <td class="product-col">
+                                        <div class="product-info d-flex align-items-center">
+                                            <a [routerLink]="['/product', item.productId]" class="flex-shrink-0">
+                                                <img [src]="getProductImageUrl(item.productImageUrl)"
+                                                    alt="{{ item.productName }}" class="product-image me-3">
+                                            </a>
+                                            <div class="flex-grow-1">
+                                                <a [routerLink]="['/product', item.productId]"
+                                                    class="product-name text-dark fw-medium text-decoration-none d-block mb-1">{{
+                                                    item.productName }}</a>
+                                                <small class="d-block text-muted">Thương hiệu: {{ item.productBrand ||
+                                                    'N/A' }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-end price-col">{{ item.productPrice | number:'1.0-0' }} đ</td>
+                                    <td class="text-center quantity-col">
+                                        <label [for]="'qty-' + item.cartItemId" class="visually-hidden">Số lượng cho {{
+                                            item.productName }}</label>
+                                        <input type="number" class="form-control form-control-sm quantity-input mx-auto"
+                                            [id]="'qty-' + item.cartItemId" [value]="item.quantity" min="1"
+                                            (change)="onQuantityChange(item, $event)" placeholder="SL"
+                                            title="Số lượng" />
+                                    </td>
+                                    <td class="text-end total-col fw-medium">{{ item.totalPrice | number:'1.0-0' }} đ
+                                    </td>
+                                    <td class="text-center action-col">
+                                        <button type="button" class="btn btn-sm btn-outline-danger border-0 btn-icon"
+                                            title="Xóa sản phẩm" (click)="removeItem(item.cartItemId)">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div><!-- /cart-items-box -->
+
+                <!--Box Thông tin giao hàng (DI CHUYỂN XUỐNG ĐÂY) -->
+                <div class="checkout-box mb-4" *ngIf="cartItems.length > 0">
+                    <h4 class="checkout-section-header mb-3">Thông tin giao hàng</h4>
+
+                    <!-- Tên người nhận -->
+                    <div class="mb-3">
+                        <label for="customerName" class="form-label">Họ và tên <span
+                                class="text-danger">*</span></label>
+                        <input type="text" id="customerName" class="form-control form-control-sm"
+                            formControlName="customerName" placeholder="Nguyễn Văn A"
+                            [ngClass]="{ 'is-invalid': checkoutForm.get('customerName')?.invalid && checkoutForm.get('customerName')?.touched }">
+                        <div *ngIf="checkoutForm.get('customerName')?.invalid && checkoutForm.get('customerName')?.touched"
+                            class="invalid-feedback small">
+                            <span *ngIf="checkoutForm.get('customerName')?.errors?.['required']">Vui lòng nhập họ
+                                tên.</span>
+                            <span *ngIf="checkoutForm.get('customerName')?.errors?.['maxlength']">Họ tên quá dài.</span>
+                        </div>
+                    </div>
+                    <!-- Số điện thoại -->
+                    <div class="mb-3">
+                        <label for="phoneNumber" class="form-label">Số điện thoại <span
+                                class="text-danger">*</span></label>
+                        <input type="tel" id="phoneNumber" class="form-control form-control-sm"
+                            formControlName="phoneNumber" placeholder="09xxxxxxxx"
+                            [ngClass]="{ 'is-invalid': checkoutForm.get('phoneNumber')?.invalid && checkoutForm.get('phoneNumber')?.touched }">
+                        <div *ngIf="checkoutForm.get('phoneNumber')?.invalid && checkoutForm.get('phoneNumber')?.touched"
+                            class="invalid-feedback small">
+                            <span *ngIf="checkoutForm.get('phoneNumber')?.errors?.['required']">Vui lòng nhập số điện
+                                thoại.</span>
+                            <span *ngIf="checkoutForm.get('phoneNumber')?.errors?.['pattern']">Số điện thoại không hợp
+                                lệ.</span>
+                        </div>
+                    </div>
+                    <!-- Địa chỉ -->
+                    <div class="mb-3">
+                        <label for="shippingAddress" class="form-label">Địa chỉ nhận hàng <span
+                                class="text-danger">*</span></label>
+                        <textarea id="shippingAddress" class="form-control form-control-sm"
+                            formControlName="shippingAddress" rows="3"
+                            placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành"
+                            [ngClass]="{ 'is-invalid': checkoutForm.get('shippingAddress')?.invalid && checkoutForm.get('shippingAddress')?.touched }"></textarea>
+                        <div *ngIf="checkoutForm.get('shippingAddress')?.invalid && checkoutForm.get('shippingAddress')?.touched"
+                            class="invalid-feedback small">
+                            <span *ngIf="checkoutForm.get('shippingAddress')?.errors?.['required']">Vui lòng nhập địa
+                                chỉ.</span>
+                            <span *ngIf="checkoutForm.get('shippingAddress')?.errors?.['maxlength']">Địa chỉ quá
+                                dài.</span>
+                        </div>
+                    </div>
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email <span class="text-muted">(Tùy chọn)</span></label>
+                        <input type="email" id="email" class="form-control form-control-sm" formControlName="email"
+                            placeholder="email@example.com"
+                            [ngClass]="{ 'is-invalid': checkoutForm.get('email')?.invalid && checkoutForm.get('email')?.touched }">
+                        <div *ngIf="checkoutForm.get('email')?.invalid && checkoutForm.get('email')?.touched"
+                            class="invalid-feedback small">
+                            <span *ngIf="checkoutForm.get('email')?.errors?.['email']">Email không đúng định
+                                dạng.</span>
+                            <span *ngIf="checkoutForm.get('email')?.errors?.['maxlength']">Email quá dài.</span>
+                        </div>
+                    </div>
+                    <!-- Ghi chú -->
+                    <div class="mb-3">
+                        <label for="orderNotes" class="form-label">Ghi chú</label>
+                        <textarea id="orderNotes" class="form-control form-control-sm" formControlName="orderNotes"
+                            rows="2" placeholder="Ghi chú thêm..."></textarea>
+                    </div>
+                </div> 
+
+            </div> 
+
+            <!-- Phương thức TT & Tóm tắt -->
+            <div class="col-lg-5 col-xl-4" *ngIf="cartItems.length > 0"> <!-- Chỉ hiện khi có hàng -->
+                <div class="checkout-column-sticky">
+
+                    <!-- Box Phương thức thanh toán (ĐẨY LÊN ĐẦU) -->
+                    <div class="checkout-box mb-4 payment-methods-box"> 
+                        <h4 class="checkout-section-header mb-3">Phương thức thanh toán <span
+                                class="text-danger">*</span></h4>
+                        <div class="payment-methods"> 
+                            <div class="form-check border rounded p-3 mb-2 payment-option">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="codPayment"
+                                    value="COD" formControlName="paymentMethod">
+                                <label class="form-check-label fw-medium w-100" for="codPayment">
+                                    <i class="fas fa-truck me-2 text-primary"></i> Thanh toán khi nhận hàng (COD)
+                                    <small class="d-block text-muted fw-normal">Trả tiền mặt trực tiếp.</small>
+                                </label>
+                            </div>
+                            <div class="form-check border rounded p-3 mb-3 payment-option">
+                                <input class="form-check-input" type="radio" name="paymentMethod"
+                                    id="bankTransferPayment" value="BANK_TRANSFER" formControlName="paymentMethod">
+                                <label class="form-check-label fw-medium w-100" for="bankTransferPayment">
+                                    <i class="fas fa-university me-2 text-primary"></i> Chuyển khoản ngân hàng
+                                    <small class="d-block text-muted fw-normal">Chuyển khoản theo thông tin sau đặt
+                                        hàng.</small>
+                                </label>
+                            </div>
+                            <div *ngIf="checkoutForm.get('paymentMethod')?.invalid && checkoutForm.get('paymentMethod')?.touched"
+                                class="text-danger small mt-n2 mb-3">
+                                Vui lòng chọn phương thức thanh toán.
+                            </div>
+                        </div> <!-- /payment-methods -->
+                    </div> <!-- /checkout-box phương thức TT -->
+
+
+                    <div class="checkout-box">
+                        <h4 class="checkout-section-header mb-3">Tóm tắt đơn hàng</h4>
+                        <ul class="list-group list-group-flush mb-3">
+                            <li class="list-group-item d-flex justify-content-between px-0">
+                                <span>Tạm tính</span>
+                                <span class="text-muted">{{ totalAmount | number:'1.0-0' }} đ</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between px-0">
+                                <span>Phí vận chuyển</span>
+                                <span class="text-muted">(Miễn phí)</span>
+                            </li>
+                            <li
+                                class="list-group-item d-flex justify-content-between fw-bold fs-5 border-top pt-2 mt-2 px-0">
+                                <span>Tổng cộng</span>
+                                <strong>{{ totalAmount | number:'1.0-0' }} đ</strong>
+                            </li>
+                        </ul>
+
+                        <!-- Thông báo lỗi đặt hàng -->
+                         <!-- Thông báo lỗi đặt hàng -->
+                        <div *ngIf="errorMessage && !isSubmitting" class="alert alert-danger mt-3 small p-2"
+                                role="alert">
+                                <i class="fas fa-exclamation-circle me-1"></i> {{errorMessage}}
+                        </div>
+
+                        <!-- Nút Đặt Hàng -->
+                        <button class="w-100 btn btn-primary btn-lg mt-3" type="submit"
+                            [disabled]="isSubmitting || checkoutForm.invalid || cartItems.length === 0">
+                            <!-- Thêm điều kiện disable -->
+                            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+                            {{ isSubmitting ? 'Đang xử lý...' : 'Đặt hàng ngay' }}
+                        </button>
+
+
+                    </div>
+                </div> 
+            </div> 
+        </div> 
+    </form> 
+</div> 
+
+<app-footer></app-footer>

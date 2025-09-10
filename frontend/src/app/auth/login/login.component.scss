@@ -1,0 +1,296 @@
+// Keyframes cho animation
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+// Container
+.container {
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    flex-direction: column;
+}
+
+// Form
+.login-form {
+    max-width: 550px;
+    width: 100%;
+    background-color: rgba(12, 12, 55, 0.5);
+    border-radius: 20px;
+    padding: 40px 30px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    margin: 40px 0;
+    transition: transform 0.3s ease; // Thêm hiệu ứng khi form load
+}
+
+.login-form:hover {
+    transform: translateY(-2px); // Nhấc nhẹ form khi hover
+}
+
+// Header
+.login-header {
+    text-align: center;
+    color: rgb(105, 244, 181);
+    margin-bottom: 30px;
+    font-weight: 700;
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    animation: fadeIn 0.5s ease-out; // Header xuất hiện mượt
+}
+
+// Form Group
+.form-group {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    transition: color 0.3s ease; // Label đổi màu nhẹ khi input focus
+}
+
+// Form Control
+.form-control {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.5) !important;
+    color: white !important;
+    border-radius: 0 !important;
+    padding: 10px 0 10px 10px !important;
+    width: 100%;
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+    color: white !important;
+    background-color: transparent !important;
+    outline: none !important;
+    box-shadow: 0 2px 5px rgba(105, 244, 181, 0.3) !important; // Ánh sáng nhẹ khi focus
+    border-color: rgb(105, 244, 181) !important;
+    transform: translateY(-2px);
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    opacity: 1;
+}
+
+// Invalid State
+.form-control.is-invalid {
+    border-color: rgb(220, 53, 69) !important;
+    animation: pulse 0.3s ease; // Nhấp nháy nhẹ khi lỗi
+}
+
+.invalid-feedback {
+    color: rgb(220, 53, 69);
+    font-size: 0.8rem;
+    animation: fadeIn 0.3s ease-out; // Thông báo lỗi fade-in
+}
+
+// Password Field
+.password-field {
+    .form-control {
+        padding-right: 2.5rem !important;
+    }
+
+    .password-toggle {
+        position: absolute;
+        top: 70%; 
+        right: 10px;
+        transform: translateY(-70%) scale(1); 
+        color: rgb(105, 244, 181);
+        cursor: pointer;
+        font-size: 1rem;
+        transition: color 0.3s ease, transform 0.2s ease;
+    }
+
+    .password-toggle:hover {
+        color: rgb(42, 243, 52);
+        transform: translateY(-50%) scale(1.1);
+    }
+}
+// Checkbox
+.form-check {
+    display: flex;
+    align-items: center;
+}
+
+.form-check-input {
+    margin-right: 10px;
+    background-color: transparent;
+    border: 2px solid rgb(60, 146, 183);
+    width: 1.2em;
+    height: 1.2em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.form-check-input:checked {
+    background-color: rgb(233, 66, 178);
+    border-color: rgb(233, 66, 178);
+    transform: scale(1.1); // Phóng to nhẹ khi checked
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 5px rgba(105, 244, 181, 0.5);
+    border-color: rgb(105, 244, 181);
+}
+
+.form-check-label {
+    color: rgb(42, 243, 52) !important;
+    font-size: 16px;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+    font-weight: 400;
+}
+
+.form-check-label:hover {
+    color: rgb(105, 244, 181) !important; // Đổi màu khi hover
+}
+
+// Links
+.register-link {
+    color: rgb(105, 244, 181);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.register-link:hover {
+    color: rgb(42, 243, 52);
+    text-decoration: underline;
+    transform: translateY(-1px); // Nhấc nhẹ khi hover
+}
+
+// Login Button
+.login-button {
+    background: linear-gradient(to right, rgb(255, 105, 180), rgb(147, 112, 219));
+    color: white;
+    border-radius: 50px;
+    width: 100%;
+    padding: 12px 0;
+    border: none;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+    text-transform: uppercase;
+}
+
+.login-button:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+    box-shadow: 0 4px 10px rgba(255, 105, 180, 0.4); // Đổ bóng khi hover
+}
+
+.login-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.spinner-border {
+    vertical-align: middle;
+    border-color: rgb(105, 244, 181); // Màu spinner xanh lá
+    border-right-color: transparent; // Tạo hiệu ứng xoay rõ
+    animation: spin 0.75s linear infinite; // Tốc độ xoay mượt
+}
+
+.txtin4{
+    color:antiquewhite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+// Error Message
+.alert.alert-danger {
+    font-size: 0.9rem;
+    padding: 8px;
+    border-radius: 10px;
+    background-color: rgba(220, 53, 69, 0.2);
+    border: 1px solid rgb(220, 53, 69);
+    color: white;
+    animation: fadeIn 0.5s ease-out; // Thông báo lỗi chính fade-in
+    text-align: center;
+}
+
+// Text Center
+.text-center {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 0.9rem;
+    margin-top: 15px;
+    flex-wrap: nowrap;
+    animation: fadeIn 0.7s ease-out; // Phần đăng ký fade-in chậm hơn
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .login-form {
+        max-width: 90%;
+        padding: 20px 15px;
+    }
+
+    .login-header {
+        font-size: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+    }
+
+    .login-button {
+        padding: 10px 0;
+        font-size: 0.9rem;
+    }
+
+    .d-flex.justify-content-between {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+}

@@ -1,0 +1,95 @@
+
+
+/* Row chứa các cột */
+.product-description {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* Cột trong footer */
+.column {
+    flex: 1;
+    min-width: 250px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Section trong footer */
+.footer-section {
+    padding: 10px;
+}
+
+/* Tiêu đề của section */
+.footer-section h3 {
+    font-size: 30px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex; /* Sử dụng flex để kiểm soát bố cục */
+    flex-direction: column;
+    align-items: center; 
+}
+
+/* Danh sách trong footer */
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Mỗi mục trong danh sách */
+.footer-section li {
+    margin-bottom: 15px;
+    display: flex; /* Sử dụng flex để kiểm soát bố cục */
+    flex-direction: column; /* Xếp các phần tử con (a và .qr-code) theo chiều dọc */
+    align-items: center; /* Căn giữa các phần tử con */
+  }
+
+/* Văn bản trong footer */
+.footer-section p {
+    font-size: 14px;
+    color: #e0e0e0;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+/* Liên kết trong footer */
+.footer-section a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+    display: block;
+}
+
+.footer-section a:hover {
+    color: #ffd700;
+    /* Màu vàng khi hover */
+}
+
+/* Container cho QR code */
+.qr-code {
+    margin-top: 5px;
+}
+
+/* QR code */
+.qr-code img {
+    max-width: 100px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    /* Căn giữa QR code */
+    border-radius: 5px;
+    border: 2px solid #ffffff;
+    /* Viền trắng để nổi bật */
+}
+
+/* Copyright */
+.footer-copy {
+    font-size: 14px;
+    color: #e0e0e0;
+    text-align: center;
+}

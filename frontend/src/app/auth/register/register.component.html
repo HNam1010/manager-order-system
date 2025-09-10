@@ -1,0 +1,122 @@
+<app-header></app-header>
+
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="register-form mx-auto my-5 p-4 p-md-5 card shadow-sm">
+        <h2 class="register-header text-center mb-4">Đăng ký tài khoản</h2>
+ 
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <!-- Tên đăng nhập -->
+            <div class="form-group mb-4 position-relative">
+                <label for="username" class="form-label">Tên đăng nhập <span class="text-danger">*</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" class="form-control" id="username" formControlName="username"
+                           [ngClass]="{'is-invalid': registerForm.get('username')?.invalid && registerForm.get('username')?.touched}">
+                </div>
+                <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
+                     class="invalid-feedback small d-block">
+                    <div *ngIf="registerForm.get('username')?.errors?.['required']">Vui lòng nhập tên đăng nhập.</div>
+                    <div *ngIf="registerForm.get('username')?.errors?.['minlength']">Tên đăng nhập phải có ít nhất 3 ký tự.</div>
+                    <div *ngIf="registerForm.get('username')?.errors?.['maxlength']">Tên đăng nhập không được vượt quá 50 ký tự.</div>
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group mb-4 position-relative">
+                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" class="form-control" id="email" formControlName="email"
+                           [ngClass]="{'is-invalid': registerForm.get('email')?.invalid && registerForm.get('email')?.touched}">
+                </div>
+                <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+                     class="invalid-feedback small d-block">
+                    <div *ngIf="registerForm.get('email')?.errors?.['required']">Vui lòng nhập email.</div>
+                    <div *ngIf="registerForm.get('email')?.errors?.['email']">Email không đúng định dạng.</div>
+                    <div *ngIf="registerForm.get('email')?.errors?.['maxlength']">Email không được vượt quá 100 ký tự.</div>
+                </div>
+            </div>
+
+            <!-- Mật khẩu -->
+            <div class="form-group mb-4 password-field position-relative">
+                <label for="password" class="form-label">Mật khẩu <span class="text-danger">*</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" placeholder="Ít nhất 6 ký tự" class="form-control" id="password"
+                           formControlName="password"
+                           [ngClass]="{'is-invalid': registerForm.get('password')?.invalid && registerForm.get('password')?.touched}"
+                           #passwordInput>
+                    <i class="password-toggle fas fa-eye-slash" (click)="togglePasswordVisibility(passwordInput, eyeIconPass)"
+                       #eyeIconPass></i>
+                </div>
+                <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+                     class="invalid-feedback small d-block">
+                    <div *ngIf="registerForm.get('password')?.errors?.['required']">Vui lòng nhập mật khẩu.</div>
+                    <div *ngIf="registerForm.get('password')?.errors?.['minlength']">Mật khẩu phải có ít nhất 6 ký tự.</div>
+                    <div *ngIf="registerForm.get('password')?.errors?.['maxlength']">Mật khẩu không được vượt quá 120 ký tự.</div>
+                </div>
+            </div>
+
+            <!-- Xác nhận mật khẩu -->
+            <div class="form-group mb-4 password-field position-relative">
+                <label for="confirmPassword" class="form-label">Xác nhận mật khẩu <span class="text-danger">*</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" placeholder="Nhập lại mật khẩu" class="form-control" id="confirmPassword"
+                           formControlName="confirmPassword"
+                           [ngClass]="{'is-invalid': (registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched) || (registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched)}"
+                           #confirmPasswordInput>
+                    <i class="password-toggle fas fa-eye-slash" (click)="togglePasswordVisibility(confirmPasswordInput, eyeIconConfirm)"
+                       #eyeIconConfirm></i>
+                </div>
+                <div *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched && !registerForm.errors?.['passwordMismatch']"
+                     class="invalid-feedback small d-block">
+                    Vui lòng xác nhận mật khẩu.
+                </div>
+                <div *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched"
+                     class="invalid-feedback small d-block">
+                    Mật khẩu xác nhận không khớp.
+                </div>
+            </div>
+
+            <!-- Điều khoản -->
+            <div class="form-group mb-4">
+                <div class="form-check checkbox-text">
+                    <input type="checkbox" class="form-check-input" id="agreeTerms" formControlName="agreeTerms"
+                           [ngClass]="{'is-invalid': registerForm.get('agreeTerms')?.invalid && registerForm.get('agreeTerms')?.touched}">
+                    <span class="text-danger"> &nbsp; * &nbsp; </span>
+                    <label class="form-check-label small" for="agreeTerms">
+                      <a href="#" class="terms-link"> Tôi đồng ý với các điều khoản và điều kiện</a>                        
+                    </label>
+                    <div *ngIf="registerForm.get('agreeTerms')?.invalid && registerForm.get('agreeTerms')?.touched"
+                         class="invalid-feedback small d-block">
+                        Bạn phải đồng ý với điều khoản.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nút Đăng ký -->
+            <div class="d-grid mb-4">
+                <button type="submit" class="register-button btn btn-primary"
+                        [disabled]="registerForm.invalid || isLoading">
+                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
+                          aria-hidden="true"></span>
+                    {{ isLoading ? 'Đang xử lý...' : 'Đăng ký' }}
+                </button>
+            </div>
+
+            <!-- Thông báo lỗi chung -->
+            <div *ngIf="!isSuccessful && errorMessage" class="alert alert-danger small p-2 text-center mb-4">
+                {{ errorMessage }}
+            </div>
+
+            <!-- Liên kết Đăng nhập -->
+            <p class="text-center small txtin4">
+                Bạn đã có tài khoản? <a class="login-link" [routerLink]="['/login']">Đăng nhập ngay</a>
+            </p>
+        </form>
+ 
+    </div>
+</div>
+
+<app-footer></app-footer>

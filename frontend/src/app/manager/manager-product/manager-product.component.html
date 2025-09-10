@@ -1,0 +1,429 @@
+<!-- manager-product.component.html -->
+
+<div class="container-fluid mt-4">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-12 col-md-2 sidebar-container-wrapper">
+      <app-manager-sidebar></app-manager-sidebar>
+    </div>
+
+    <!-- Nội dung chính -->
+    <div class="col-12 col-md-10 content">
+      <h2 class="page-title mb-4">QUẢN LÝ SẢN PHẨM</h2>
+
+      <!-- Nút mở modal thêm sản phẩm -->
+      <div class="d-flex justify-content-end align-items-center mb-3">
+        <button
+          class="btn btn-primary btn-add"
+          (click)="addProduct(productModalContent)"
+        >
+          <i class="fas fa-plus me-2"></i>Thêm Sản Phẩm
+        </button>
+      </div>
+
+      <!-- Loading & Error -->
+      <div *ngIf="isLoading" class="text-center p-4">Đang tải dữ liệu...</div>
+      <div
+        *ngIf="errorMessage && !isLoading"
+        class="alert alert-danger"
+        role="alert"
+      >
+        {{ errorMessage }}
+      </div>
+
+      <!-- Bảng dữ liệu sản phẩm -->
+      <div *ngIf="!isLoading && !errorMessage" class="table-responsive">
+        <table class="table table-bordered table-hover shadow-sm custom-table">
+          <thead class="table-dark text-center">
+            <tr>
+              <!-- 7 cột -->
+              <th scope="col" class="stt">STT</th>
+              <th scope="col" class="masp">Mã SP</th>
+              <th scope="col">Tên Sản phẩm</th>
+              <th scope="col">Danh mục</th>
+              <th scope="col" class="text-end">Giá (VNĐ)</th>
+              <th scope="col" class="text-end">Tồn kho</th>
+              <th scope="col" class="text-center actions-column">Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Trường hợp không có dữ liệu -->
+            <tr *ngIf="!products || products.length === 0">
+              <td colspan="7" class="text-center text-muted fst-italic p-3">
+                Không có dữ liệu sản phẩm.
+              </td>
+            </tr>
+
+            <!-- Hiển thị từng sản phẩm -->
+            <tr *ngFor="let product of products; let i = index">
+              <th scope="row" class="text-center align-middle">
+                {{ currentPage * pageSize + i + 1 }}
+              </th>
+              <td class="align-middle">{{ product.serialId || "N/A" }}</td>
+              <td class="align-middle">{{ product.name }}</td>
+              <td class="align-middle">
+                {{ product.productTypeName || "N/A" }}
+              </td>
+              <td class="text-end align-middle">
+                {{ product.price | number : "1.0-0" }}
+              </td>
+              <td class="text-end align-middle">
+                {{ product.quantity | number }}
+              </td>
+
+              <td class="align-middle actions-column text-center">
+                <!-- Nút sửa -->
+                <button
+                  class="btn btn-sm btn-icon btn-edit me-2 shadow-sm"
+                  title="Sửa"
+                  (click)="editProduct(productModalContent, product)"
+                >
+                  <i class="fas fa-edit"></i>
+                </button>
+                <!-- Nút xóa -->
+                <button
+                  class="btn btn-sm btn-icon btn-delete shadow-sm"
+                  title="Xóa"
+                  (click)="deleteProduct(product.serialId)"
+                >
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Phân trang -->
+      <nav
+        *ngIf="!isLoading && totalPages > 0"
+        aria-label="Order pagination"
+        class="mt-4 d-flex justify-content-center pagination-container"
+      >
+        <!-- Thêm class pagination-container -->
+        <ul class="pagination pagination-sm shadow-sm">
+          <!-- Sử dụng ul.pagination, thêm size sm và shadow -->
+
+          <!-- Nút Trang Đầu -->
+          <li class="page-item" [class.disabled]="currentPage === 0">
+            <a
+              class="page-link"
+              href="javascript:void(0)"
+              aria-label="First"
+              (click)="goToPage(0)"
+              title="Trang đầu"
+            >
+              <span aria-hidden="true">««</span>
+            </a>
+          </li>
+
+          <!-- Nút Trang Trước -->
+          <li class="page-item" [class.disabled]="currentPage === 0">
+            <a
+              class="page-link"
+              href="javascript:void(0)"
+              aria-label="Previous"
+              (click)="prevPage()"
+              title="Trang trước"
+            >
+              <span aria-hidden="true">«</span>
+            </a>
+          </li>
+
+          <!-- Hiển thị thông tin trang hiện tại -->
+
+          <li class="page-item disabled">
+            <span class="page-link page-info">
+              <!-- Dùng span cho text không click được, thêm class page-info -->
+              Trang {{ currentPage + 1 }} / {{ totalPages }}
+            </span>
+          </li>
+
+          <!-- Nút Trang Sau -->
+          <li
+            class="page-item"
+            [class.disabled]="currentPage >= totalPages - 1"
+          >
+            <a
+              class="page-link"
+              href="javascript:void(0)"
+              aria-label="Next"
+              (click)="nextPage()"
+              title="Trang sau"
+            >
+              <span aria-hidden="true">»</span>
+            </a>
+          </li>
+
+          <!-- Nút Trang Cuối -->
+          <li
+            class="page-item"
+            [class.disabled]="currentPage >= totalPages - 1"
+          >
+            <a
+              class="page-link"
+              href="javascript:void(0)"
+              aria-label="Last"
+              (click)="goToPage(totalPages - 1)"
+              title="Trang cuối"
+            >
+              <span aria-hidden="true">»»</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <!-- /content -->
+  </div>
+  <!-- /row -->
+
+  <!-- Footer -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>
+
+<!-- Modal nội dung sử dụng ng-template -->
+
+<ng-template #productModalContent let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="productModalLabel">
+      {{ isEditMode ? "Sửa Sản phẩm" : "Thêm Sản phẩm" }}
+    </h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="productForm">
+      <!-- Hàng 1: Tên sản phẩm & Thương hiệu -->
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="productName" class="form-label"
+            >Tên sản phẩm <span class="text-danger">*</span></label
+          >
+          <input
+            type="text"
+            id="productName"
+            class="form-control"
+            formControlName="name"
+          />
+          <div
+            *ngIf="
+              productForm.controls['name'].invalid &&
+              (productForm.controls['name'].dirty ||
+                productForm.controls['name'].touched)
+            "
+            class="text-danger small mt-1"
+          >
+            <div *ngIf="productForm.controls['name'].errors?.['required']">
+              Tên sản phẩm là bắt buộc.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="brand" class="form-label">Thương hiệu</label>
+          <input
+            type="text"
+            id="brand"
+            class="form-control"
+            formControlName="brand"
+          />
+        </div>
+      </div>
+
+      <!-- Hàng 2: Giá & Số lượng -->
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="price" class="form-label"
+            >Giá bán (VNĐ) <span class="text-danger">*</span></label
+          >
+          <input
+            type="number"
+            id="price"
+            class="form-control"
+            formControlName="price"
+            min="0"
+          />
+          <div
+            *ngIf="
+              productForm.controls['price'].invalid &&
+              (productForm.controls['price'].dirty ||
+                productForm.controls['price'].touched)
+            "
+            class="text-danger small mt-1"
+          >
+            <div *ngIf="productForm.controls['price'].errors?.['required']">
+              Giá là bắt buộc.
+            </div>
+            <div *ngIf="productForm.controls['price'].errors?.['min']">
+              Giá phải lớn hơn hoặc bằng 0.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="stockQuantity" class="form-label"
+            >Số lượng tồn <span class="text-danger">*</span></label
+          >
+          <input
+            type="number"
+            id="stockQuantity"
+            class="form-control"
+            formControlName="quantity"
+            min="0"
+          />
+          <div
+            *ngIf="
+              productForm.controls['quantity'].invalid &&
+              (productForm.controls['quantity'].dirty ||
+                productForm.controls['quantity'].touched)
+            "
+            class="text-danger small mt-1"
+          >
+            <div *ngIf="productForm.controls['quantity'].errors?.['required']">
+              Số lượng là bắt buộc.
+            </div>
+            <div *ngIf="productForm.controls['quantity'].errors?.['min']">
+              Số lượng phải lớn hơn hoặc bằng 0.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hàng 3: Loại sản phẩm -->
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="productTypeId" class="form-label"
+            >Loại sản phẩm <span class="text-danger">*</span></label
+          >
+          <select
+            id="productTypeId"
+            class="form-select"
+            formControlName="productTypeId"
+          >
+            <option [ngValue]="null" disabled>-- Chọn loại sản phẩm --</option>
+            <option *ngFor="let type of productTypes" [ngValue]="type.serialId">
+              {{ type.name }}
+            </option>
+          </select>
+          <div
+            *ngIf="
+              productForm.controls['productTypeId'].invalid &&
+              (productForm.controls['productTypeId'].dirty ||
+                productForm.controls['productTypeId'].touched)
+            "
+            class="text-danger small mt-1"
+          >
+            <div
+              *ngIf="productForm.controls['productTypeId'].errors?.['required']"
+            >
+              Loại sản phẩm là bắt buộc.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="productSize" class="form-label">Kích thước</label>
+        <input
+          type="text"
+          id="productSize"
+          class="form-control"
+          formControlName="size"
+          placeholder="Ví dụ: S, M, L hoặc 39, 40,..."
+        />
+        <!-- Optional: Thêm validation nếu cần, ví dụ maxLength -->
+        <div
+          *ngIf="
+            productForm.controls['size'].invalid &&
+            (productForm.controls['size'].dirty ||
+              productForm.controls['size'].touched)
+          "
+          class="text-danger small mt-1"
+        >
+          <div *ngIf="productForm.controls['size'].errors?.['maxlength']">
+            Kích thước quá dài.
+          </div>
+        </div>
+      </div>
+
+      <!-- Ảnh sản phẩm -->
+      <div class="mb-3">
+        <label for="productImage" class="form-label"
+          >Hình ảnh sản phẩm
+          {{ isEditMode ? "(Để trống nếu không muốn đổi ảnh)" : "" }}</label
+        >
+        <input
+          class="form-control"
+          type="file"
+          id="productImage"
+          accept="image/*"
+          (change)="onFileSelected($event)"
+        />
+      </div>
+
+      <!-- Xem trước ảnh -->
+      <div *ngIf="imagePreview" class="mb-3 text-center">
+        <label class="form-label d-block">Xem trước:</label>
+        <img [src]="imagePreview" alt="Xem trước ảnh" class="img-thumbnail" />
+      </div>
+      <!--Ảnh cũ khi sửa -->
+      <div
+        *ngIf="isEditMode && currentImagePath && !imagePreview"
+        class="mb-3 text-center"
+      >
+        <label class="form-label d-block">Ảnh hiện tại:</label>
+        <img
+          [src]="currentImagePath"
+          alt="Ảnh hiện tại"
+          class="img-thumbnail"
+        />
+      </div>
+
+      <!-- Mô tả -->
+      <div class="mb-3">
+        <label for="description" class="form-label">Mô tả</label>
+        <textarea
+          id="description"
+          class="form-control"
+          formControlName="description"
+          rows="3"
+        ></textarea>
+      </div>
+    </form>
+
+    <!--Lỗi khi lưu-->
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3 p-2 small">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modal.dismiss('Cancel click')"
+    >
+      Hủy
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="saveProduct()"
+      [disabled]="productForm.invalid || isSaving"
+    >
+      <span
+        *ngIf="isSaving"
+        class="spinner-border spinner-border-sm me-2"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      {{ isEditMode ? "Lưu thay đổi" : "Thêm mới" }}
+    </button>
+  </div>
+</ng-template>

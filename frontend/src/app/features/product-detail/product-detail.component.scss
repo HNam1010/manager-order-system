@@ -1,0 +1,218 @@
+.product-detail-container {
+  background-color: rgb(198, 199, 243);
+  padding: 2rem;
+  border-radius: 18px;
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+}
+
+.product-detail-image {
+  max-height: 500px; // Giới hạn chiều cao ảnh lớn
+  object-fit: contain; // Hiển thị toàn bộ ảnh, có thể có khoảng trắng
+}
+
+.loading {
+  width: 3rem;
+  height: 3rem;
+}
+
+.btn-outline-secondary {
+  background-color: transparent;
+  color: #fff;
+  border: 1px #fff;
+}
+.whitespace-preline {
+  white-space: pre-line;
+}
+
+.product-info {
+  h1.product-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+
+  .product-price {
+    font-size: 1.75rem; // Giá to hơn
+    font-weight: 700;
+    margin-bottom: 1.5rem; // Khoảng cách lớn hơn
+  }
+
+  .product-stock {
+    font-weight: 500;
+
+    i {
+      margin-right: 0.3rem;
+    }
+  }
+
+  .product-short-description {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .action-buttons {
+    .btn-lg {
+      // Style nút to hơn
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+    }
+  }
+
+  .extra-info {
+    font-size: 20px;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .product-detail-container {
+    padding: 1.5rem;
+  }
+
+  .product-info h1.product-title {
+    font-size: 1.5rem;
+  }
+
+  .product-info .product-price {
+    font-size: 1.5rem;
+  }
+
+  .action-buttons .btn-lg {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .product-detail-image {
+    max-height: 350px;
+  }
+
+  .action-buttons {
+    display: flex;
+    flex-direction: column; // Nút xếp chồng lên nhau
+    gap: 0.5rem; // Khoảng cách giữa các nút
+
+    .btn {
+      width: 100%;
+    }
+  }
+}
+
+.image-zoom-container {
+  position: relative; // Cho phép định vị tuyệt đối phần tử con
+  overflow: hidden; // Ẩn phần ảnh phóng to tràn ra ngoài (nếu có)
+  cursor: crosshair; // Đổi con trỏ chuột khi rê vào ảnh
+}
+
+.product-detail-image {
+  display: block; // Đảm bảo ảnh là block để tính toán kích thước đúng
+  width: 100%; // Chiếm toàn bộ chiều rộng của container
+  border: 1px solid #eee; // Thêm viền nhẹ cho ảnh gốc
+}
+
+.zoomed-image-container {
+  position: absolute; // Định vị tuyệt đối so với image-zoom-container
+  top: 0;
+  right: -105%; // Đặt bên phải ảnh gốc (100% + 5% khoảng cách)
+  width: 100%; // Chiều rộng bằng ảnh gốc
+  height: 100%; // Chiều cao bằng ảnh gốc
+  border: 1px solid #ccc; // Viền cho vùng zoom
+  background-repeat: no-repeat;
+  background-size: cover; // Hoặc dùng cover để tự điều chỉnh, nhưng có thể không phóng to nhiều
+  pointer-events: none; // Không bắt sự kiện chuột trên vùng zoom này
+  opacity: 0; // Ẩn ban đầu
+  transition: opacity 0.2s ease-in-out; // Hiệu ứng xuất hiện mượt mà
+  z-index: 10; // Nằm trên các phần tử khác
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); // Đổ bóng
+}
+
+// Điều chỉnh vị trí zoom trên màn hình nhỏ hơn
+@media (max-width: 768px) {
+  .zoomed-image-container {
+    // Có thể không hiển thị zoom trên mobile hoặc đặt ở vị trí khác
+    display: none; // Ví dụ: ẩn hoàn toàn trên tablet trở xuống
+  }
+
+  .image-zoom-container {
+    cursor: default; // Bỏ con trỏ crosshair
+  }
+}
+img {
+  width: 400px;
+  height: auto;
+  display: block;
+  border: 1px solid #ccc;
+}
+
+.zoom-lens {
+  position: fixed;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  background-size: 800px;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  background-color: #fff;
+  z-index: 1000;
+}
+
+.product-details {
+  padding: 20px 0;
+  background-color: #f8f9fa; // Màu nền nhẹ để tạo sự nổi bật
+  border-radius: 8px; // Bo góc nhẹ
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); // Đổ bóng nhẹ để tạo chiều sâu
+
+  .section-divider {
+    border: 0;
+    height: 2px;
+    background: linear-gradient(
+      to right,
+      rgba(128, 0, 128, 0),
+      // Màu tím nhạt
+      rgba(128, 0, 128, 1),
+      // Màu tím đậm
+      rgba(128, 0, 128, 0) // Màu tím nhạt
+    );
+    margin: 20px 0;
+  }
+
+  .section-title {
+    font-size: 1.5rem; // Kích thước chữ tiêu đề
+    font-weight: 600; // Độ đậm của chữ
+    color: #4b0082; // Màu tím đậm phù hợp với hình ảnh bạn cung cấp
+    margin-bottom: 15px;
+    position: relative;
+    display: inline-block;
+
+    // Hiệu ứng gạch chân nhẹ
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 50%;
+      height: 3px;
+      background-color: #800080; // Màu tím
+      border-radius: 2px;
+    }
+  }
+
+  .description-text {
+    font-size: 1rem; // Kích thước chữ mô tả
+    line-height: 1.6; // Khoảng cách dòng cho dễ đọc
+    color: #333; // Màu chữ tối để dễ nhìn
+    margin: 0;
+    padding: 10px 15px;
+    background-color: #ffcbcb; // Nền trắng cho phần mô tả
+    border-left: 4px solid #800080; // Đường viền trái màu tím
+    border-radius: 4px;
+  }
+}

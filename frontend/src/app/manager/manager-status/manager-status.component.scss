@@ -1,0 +1,324 @@
+.actions-cell {
+  // Đổi tên class cho khớp với HTML mới (ô chứa dropdown)
+  white-space: nowrap;
+  min-width: 150px; // Điều chỉnh lại chiều rộng cho dropdown button
+  text-align: center; // Căn giữa nội dung trong ô (dropdown button)
+}
+
+.content {
+  padding: 25px; /* Padding cho nội dung */
+  border-radius: 8px;
+  min-height: 80vh;
+  margin-left: 11px;
+}
+
+.content h2.page-title {
+  text-align: center;
+  color: #212529; /* Màu chữ tối cho dễ đọc */
+  font-weight: 800;
+  border-bottom: 2px solid #dee2e6;
+  padding-bottom: 10px;
+  margin-bottom: 1.5rem;
+}
+
+//chỉnh sidebar - Giữ nguyên hoặc điều chỉnh cẩn thận
+.col-md-2.sidebar-container-wrapper {
+  margin-left: -12px;
+  margin-top: -24px;
+}
+
+/* Bộ lọc trạng thái */
+#statusFilter.form-select-sm {
+  font-size: 0.875rem;
+  max-width: 250px;
+  display: inline-block;
+  width: auto;
+}
+
+label[for="statusFilter"] {
+  margin-right: 0.5rem;
+  font-weight: 500;
+}
+
+.form-select {
+  min-width: 180px; /* Đảm bảo select đủ rộng */
+}
+
+.page-title {
+  text-align: center;
+  color: #212529;
+  font-weight: 800;
+  border-bottom: 2px solid #dee2e6;
+  padding-bottom: 10px;
+  margin-bottom: 1.5rem;
+}
+
+// Table styles
+.custom-table {
+  border: 1px solid #dee2e6; /* Viền nhẹ cho bảng */
+  text-align: center;
+  thead.table-dark {
+    th {
+      color: #fff;
+      background-color: #343a40;
+      border-color: #454d55;
+    }
+  }
+
+  tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.04); /* Hiệu ứng hover */
+  }
+
+  th,
+  td {
+    vertical-align: middle;
+  }
+
+  /* Định nghĩa chiều rộng cột */
+  .stt {
+    width: 40px;
+    min-width: 40px;
+    text-align: center;
+  }
+
+  .ma-dh {
+    width: 60px;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  .khach-hang {
+    min-width: 130px;
+  }
+
+  .ngay-dat {
+    width: 190px;
+    min-width: 190px;
+    text-align: center;
+  }
+
+  .tong-tien {
+    width: 200px;
+    min-width: 230px;
+    text-align: right;
+  }
+
+  .phuong-thuc-tt, // Class bạn dùng cho th/td PTTT
+  .phuong-thuc-tt-cell {
+    width: 180px; // Đặt chiều rộng mong muốn
+    min-width: 120px;
+    text-align: center; // Căn giữa nếu muốn
+  }
+
+  .trang-thai {
+    width: 200px;
+    min-width: 230px;
+    text-align: center;
+  }
+
+  .hanh-dong-cell {
+    white-space: nowrap;
+    min-width: 50px;
+    text-align: center;
+  }
+
+  .hanh-dong-cell .btn {
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+  }
+
+  /* Styling cho badge trạng thái */
+  .badge {
+    font-size: 0.875em;
+    padding: 0.45em 0.75em;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .text-bg-pending-confirmation {
+    background-color: #ffc107;
+    color: #000;
+  }
+
+  .text-bg-in-delivery {
+    background-color: #0d6efd;
+    color: #fff;
+  }
+}
+
+// Pagination styles (giữ nguyên hoặc tùy chỉnh)
+/* Phân trang */
+.pagination .page-link {
+  color: #0d6efd;
+}
+
+.pagination .page-link:focus {
+  box-shadow: none;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #6c757d;
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+}
+
+.pagination .page-item.active .page-link {
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+@media (max-width: 992px) {
+  // Thêm breakpoint cho màn hình nhỏ hơn Large
+  .custom-table {
+    .khach-hang {
+      min-width: 120px; // Giảm min-width
+    }
+
+    .ngay-dat {
+      min-width: 140px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 15px;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .custom-table {
+    .ngay-dat,
+    .khach-hang {
+      font-size: 0.85rem;
+      padding: 0.5rem 0.4rem;
+      /* display: none; */
+      // Bỏ comment nếu muốn ẩn hẳn
+    }
+
+    .actions-cell {
+      // Chọn đúng class mới
+      min-width: auto; // Cho phép co lại
+      white-space: normal; // Cho phép nút xuống dòng
+    }
+  }
+
+  #statusFilter.form-select-sm {
+    max-width: none;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  // Bộ lọc chiếm full width
+  label[for="statusFilter"] {
+    display: block;
+    margin-right: 0;
+  }
+
+  // Label bộ lọc ra dòng riêng
+  .pagination {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .custom-table {
+    font-size: 0.85rem; // Giảm font toàn bảng
+
+    .ngay-dat,
+    .khach-hang,
+    .tong-tien {
+      display: none; // Ẩn các cột này
+    }
+
+    .ma-dh {
+      width: 70px;
+      min-width: 70px; // Giảm chiều rộng mã ĐH
+    }
+
+    .actions-cell {
+      // Chọn đúng class mới
+      min-width: auto;
+
+      .dropdown {
+        width: 100%;
+      }
+
+      // Dropdown full width
+      .dropdown-toggle {
+        width: 100%;
+        font-size: 0.8rem;
+      }
+
+      // Nút nhỏ hơn, full width
+      .dropdown-menu {
+        width: 100%;
+      }
+    }
+  }
+
+  .page-title {
+    font-size: 1.3rem;
+  }
+}
+
+.order-items-modal {
+  max-height: 200px;
+  overflow-y: auto;
+  font-size: 0.9rem;
+}
+
+//phân trang
+.pagination-container {
+  // Style cho container chứa ul.pagination
+  margin-top: 1.5rem; // Khoảng cách phía trên
+}
+
+.pagination {
+  // Bootstrap đã có style cơ bản, chúng ta tinh chỉnh thêm
+  .page-item {
+    .page-link {
+      color: #0d6efd; // Màu chữ link
+      border-radius: 0.25rem; // Bo góc nhẹ cho từng link (nếu pagination-sm không đủ)
+
+      &:focus {
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25); // Thêm hiệu ứng focus rõ hơn
+      }
+
+      // Style cho icon mũi tên
+      span[aria-hidden="true"] {
+        font-weight: 600; // Cho mũi tên đậm hơn chút
+      }
+    }
+
+    // Style cho item bị vô hiệu hóa
+    &.disabled .page-link {
+      color: #6c757d;
+      background-color: #e9ecef;
+      border-color: #dee2e6;
+      cursor: not-allowed; // Đổi con trỏ chuột
+    }
+
+    // Style cho phần hiển thị text "Trang X / Y"
+    .page-info {
+      color: #495057; // Màu chữ tối hơn disabled link
+      background-color: #f8f9fa; // Màu nền khác biệt nhẹ
+      padding-left: 0.8rem; // Tăng padding ngang cho dễ nhìn
+      padding-right: 0.8rem;
+      cursor: default; // Con trỏ mặc định
+    }
+  }
+
+  // Bỏ bo góc ở đầu và cuối nếu muốn thành một khối liền
+  .page-item:first-child .page-link {
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+  }
+  .page-item:last-child .page-link {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+  }
+}

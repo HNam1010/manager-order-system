@@ -1,0 +1,125 @@
+<app-header></app-header>
+
+<div class="container order-detail-container mt-4 mb-5">
+    <!-- CONTAINER CHUNG CHO HEADER TRANG (DÙNG FLEXBOX)-->
+    <div class="page-header-container d-flex justify-content-between align-items-center mb-4">
+        <!-- Nút Quay Lại (Đặt đầu tiên) -->
+        <button class="btn btn-sm btn-outline-secondary back-button" (click)="goBack()" title="Quay lại">
+            <i class="fas fa-arrow-left me-1"></i> Quay lại
+        </button>
+
+        <!-- Tiêu đề trang (Ở giữa) -->
+        <div class="page-header text-center flex-grow-1">
+            <!-- flex-grow-1 để tiêu đề chiếm không gian còn lại và tự căn giữa -->
+            <h1 class="mb-0">Chi tiết Đơn hàng</h1>
+        </div>
+
+        <!-- Có thể thêm một div trống để giữ cấu trúc đối xứng nếu cần -->
+        <div class="header-spacer">
+            <button class="btn btn-sm btn-outline-secondary back-button"> <!-- Nút ẩn để cân bằng -->
+                <i class="fas fa-arrow-left me-1"></i> Quay lại
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="text-center loading-indicator p-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Đang tải...</span>
+        </div>
+        <p class="mt-2">Đang tải chi tiết đơn hàng...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="errorMessage && !isLoading" class="alert alert-danger" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i> {{ errorMessage }}
+        <!-- Có thể giữ lại nút về trang chủ ở đây nếu muốn -->
+        <button class="btn btn-sm btn-link text-danger float-end" (click)="goBack()">Quay lại Lịch sử</button>
+    </div>
+
+    <!-- Main Content: Chỉ hiển thị khi không loading, không lỗi và có order -->
+    <div *ngIf="!isLoading && !errorMessage && order" class="order-details-content">
+        <div class="card shadow-sm mb-4">
+            <div
+                class="card-header d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center text-center text-sm-start bg-transparent border-bottom pb-3">
+                <h5 class="mb-2 mb-sm-0">Mã Đơn hàng #{{ order.orderCode ?? order.serialId }}</h5>
+                <span class="badge rounded-pill {{ getStatusBadgeClass(order.statusCode) }}">
+                    Trạng Thái: {{ order.statusDescription ?? order.statusCode }}
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <!-- Thông tin chung -->
+                    <div class="col-md-6">
+                        <h6 class="info-title">Thông tin Người nhận</h6>
+                        <p class="mb-1"><strong>Họ tên:</strong> {{ order.customerName }}</p>
+                        <p class="mb-1"><strong>Điện thoại:</strong> {{ order.phoneNumber }}</p>
+                        <p class="mb-1"><strong>Email:</strong> {{ order.email || 'Không có' }}</p>
+                        <p class="mb-0"><strong>Địa chỉ:</strong> {{ order.shippingAddress }}</p>
+                    </div>
+                    <!-- Thông tin đơn hàng -->
+                    <div class="col-md-6">
+                        <h6 class="info-title">Thông tin Đơn hàng</h6>
+                        <p class="mb-1"><strong>Ngày đặt:</strong> {{ order.orderDate | date:'HH:mm dd/MM/yyyy' }}</p>
+                        <p class="mb-1"><strong>Tổng tiền:&nbsp;</strong> <strong class="text-danger">{{
+                                order.totalAmount |
+                                currency:'VND':'symbol':'1.0-0' }}</strong></p>
+                        <p class="mb-1"><strong>Thanh toán:</strong> {{ order.paymentMethod === 'BANK_TRANSFER' ?
+                            'Chuyển khoản' : 'Khi nhận hàng (COD)' }}</p>
+                        <p class="mb-0"><strong>Ghi chú:</strong> {{ order.orderNotes || 'Không có' }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Danh sách sản phẩm -->
+        <div class="card shadow-sm">
+            <!-- BỎ BG-LIGHT Ở CARD HEADER NÀY-->
+            <div class="card-header border-bottom"> 
+                <h5 class="mb-0">Chi tiết Sản phẩm</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table order-items-table mb-0 align-middle">
+                        <thead class="table-header table-light text-center">
+                            <tr>
+                                <th scope="col" class="col-product">Sản phẩm</th>
+                                <th scope="col" class="col-price">Đơn giá</th>
+                                <th scope="col" class="col-quantity">Số lượng</th>
+                                <th scope="col" class="col-total">Thành tiền</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr *ngFor="let item of order.items">
+                                <td class="text-start ps-3">
+                                    <div class="d-flex align-items-center product-cell">
+                                        <!-- Khung chứa ảnh cố định -->
+                                        <div class="item-image-container flex-shrink-0 me-3">
+                                            <img [src]="getProductImageUrl(item.productImagePath)"
+                                                alt="{{ item.productName }}" class="item-image">
+                                        </div>
+                                        <!-- Thông tin sản phẩm -->
+                                        <div class="item-info flex-grow-1">
+                                            <span class="item-name d-block fw-medium">{{ item.productName }}</span>
+                                            <small class="text-muted d-block">Thương hiệu: {{ item.productBrand || 'N/A'
+                                                }}</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-end">{{ item.productPrice | currency:'VND':'symbol':'1.0-0' }}</td>
+                                
+                                <td class="text-center">{{ item.quantity }}</td>
+                                <td class="text-end pe-3 fw-medium">{{ item.totalPrice | currency:'VND':'symbol':'1.0-0'
+                                    }}</td> 
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End Main Content Area -->
+
+</div> <!-- End Container -->
+
+<app-footer></app-footer>

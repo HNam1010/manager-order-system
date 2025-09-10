@@ -1,0 +1,13 @@
+package com.example.order_service.repository;
+
+import com.example.order_service.entity.OrderStatus;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface OrderStatusRepository extends JpaRepository<OrderStatus, Integer> { // Khóa chính là Integer
+    // Tìm trạng thái theo mã code
+    Optional<OrderStatus> findByStatusCode(String statusCode);
+}

@@ -1,0 +1,139 @@
+.intro-section {
+    text-align: center;
+    color: white;
+    padding: 20px;
+}
+
+.search-box {
+    width: 800px;
+    max-width: 95%; /* Thêm max-width để responsive tốt hơn */
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+
+    margin-left: auto;
+    margin-right: auto;
+    position: relative; /* Bật khả năng định vị tương đối */
+    left: 50px;
+}
+.intro-full-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1; /* Đẩy xuống dưới chữ */
+}
+
+.search-input {
+
+    flex-grow: 1; /* Cho phép input chiếm không gian còn lại */
+    background-color: transparent; /* Giống hình hơn */
+    margin-right: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Sửa border-color */
+    color: white; /* Chữ nhập vào màu trắng */
+    padding: 10px 15px; /* Thêm padding cho đẹp */
+    border-radius: 20px; /* Bo góc giống hình */
+}
+
+
+.form-control::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: rgba(255, 255, 255, 0.5);
+    opacity: 1;
+    /* Firefox */
+}
+
+.form-control:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.form-control::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Style cho label "Chọn:" */
+.search-box label {
+    color: rgba(255, 255, 255, 0.8); /* Cho label màu trắng mờ */
+    white-space: nowrap; /* Ngăn không cho chữ "Chọn:" xuống dòng */
+    margin-left: 10px; /* Thêm khoảng cách bên trái label */
+}
+
+
+.product-category {
+
+    flex-shrink: 0; /* Ngăn select bị co lại */
+    width: auto; /* Để độ rộng tự điều chỉnh theo nội dung */
+    min-width: 200px; /* Đặt độ rộng tối thiểu nếu muốn */
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Sửa border */
+    background-color: transparent; /* Nền trong suốt */
+    color: rgba(40, 29, 51, 0.9); /* Chữ màu trắng */
+    padding: 10px 15px; /* Thêm padding */
+    border-radius: 20px; /* Bo góc */
+    -webkit-appearance: none; /* Bỏ giao diện mặc định của trình duyệt */
+    -moz-appearance: none;
+    appearance: none;
+
+    /* Thêm icon mũi tên tùy chỉnh (cần ảnh hoặc SVG) */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='rgba(255,255,255,0.7)' class='bi bi-caret-down-fill' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    padding-right: 40px; /* Tạo không gian cho mũi tên */
+}
+
+
+.product-item {
+    background-color: rgb(19, 23, 42);
+    border: 1px solid rgb(35, 39, 61);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+
+    overflow: hidden; /* Đảm bảo bo góc áp dụng cho cả ảnh */
+}
+
+.product-image {
+    width: 100%;
+    height: 250px; /* Đặt chiều cao cố định cho ảnh */
+    object-fit: cover; /* Cắt ảnh cho vừa, không bị méo */
+    margin-bottom: 15px; /* Tăng khoảng cách dưới ảnh */
+    border-radius: 10px; /* Bo góc nhẹ cho ảnh */
+}
+
+.product-name {
+    color: white;
+}
+
+.product-description {
+    color: rgb(173, 178, 203);
+}
+
+.product-warranty {
+    color: rgb(242, 126, 212);
+}
+
+.product-price {
+    color: white;
+}
+
+.row {
+    margin-top: 100px;
+}
+
+.product-rating {
+    color: yellow;
+    margin-top: 10px;
+}
+
+.product-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.space-x {
+    margin: 0 10px;
+}

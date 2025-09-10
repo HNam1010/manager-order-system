@@ -1,0 +1,106 @@
+/*css về giới thiệu thông tin*/
+.container {
+    display: flex;
+    background-color: transparent;
+}
+
+.content {
+    flex: 1;
+    padding: 30px;
+}
+
+/* Hiệu ứng hover */
+.intro-section:hover,
+.intro-payment:hover,
+.intro-ship:hover,
+.intro-change-products:hover {
+  transform: translateY(-8px); /* Nâng nhẹ phần tử khi hover */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), /* Tăng bóng khi hover */
+              0 0 25px rgba(208, 190, 221, 0.5);
+}
+
+/*css cho intro*/
+.intro-section,
+.intro-payment,
+.intro-ship,
+.intro-change-products {
+    background-color: rgba(198, 169, 219, 0.811);
+    padding: 30px;
+    border-radius: 80px;
+    border: 2px solid #e0e0e0;
+    /* Viền nhẹ */
+    box-shadow: 
+        10px 10px 20px rgba(150, 150, 150, 0.2),  
+        -7px -7px 20px rgba(255, 255, 255, 0.8);
+
+
+    margin: 20px 0; //20px cho top và bottom, 0 cho left và right
+    transition: transform 0.5s ease, box-shadow 0.5s ease; /* Hiệu ứng hover */
+}
+
+.intro-section h1,
+.intro-payment h1,
+.intro-ship h1,
+.intro-change-products h1
+{
+    font-size: 30px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 700; /* Đậm hơn */
+    letter-spacing: 1px; /* Tăng khoảng cách chữ */
+    text-transform: uppercase; /* Chuyển thành chữ in hoa */
+}
+
+.intro-section p,
+.intro-payment p,
+.intro-ship p,
+.intro-change-products p
+{
+    font-size: 17px;
+    color: #302f2f;
+    line-height: 1.6; /* Tăng khoảng cách dòng để dễ đọc */
+    text-align: justify; /* Căn đều hai bên */
+    padding-left: 20px;    /* Lùi đầu dòng */
+}
+
+.intro-ship .thutd{
+    font-size: 17px;
+    color: #302f2f;
+    line-height: 1.6; /* Tăng khoảng cách dòng để dễ đọc */
+    text-align: justify; /* Căn đều hai bên */
+    padding-left: 60px;    /* Lùi đầu dòng */
+}
+
+//hiển thị trên di động 
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .intro-section,
+    .intro-payment,
+    .intro-ship,
+    .intro-change-products {
+        padding: 20px;
+        /* Giảm padding trên mobile */
+        border-radius: 15px;
+        /* Giảm border-radius */
+    }
+
+    .intro-section h1,
+    .intro-payment h1,
+    .intro-ship h1,
+    .intro-change-products h1 {
+        font-size: 24px;
+        /* Giảm kích thước tiêu đề */
+    }
+
+    .intro-section p,
+    .intro-payment p,
+    .intro-ship p,
+    .intro-change-products p {
+        font-size: 14px;
+        /* Giảm kích thước chữ */
+    }
+}

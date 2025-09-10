@@ -1,0 +1,41 @@
+<div class="sidebar-container">
+    <h3 class="sidebar-title">Cửa hàng bán quần áo</h3>
+
+    <ul class="sidebar-nav">
+        <li>
+            <!-- Sửa lại routerLink cho trang chủ quản lý -->
+            <a routerLink="/manager/managershop-home" routerLinkActive="active-link"
+                [routerLinkActiveOptions]="{exact: true}">
+                <i class="fas fa-home fa-fw"></i>
+                <span>Trang chủ</span>
+            </a>
+        </li>
+        <li>
+            <!-- Sửa lại routerLink cho quản lý user -->
+            <a routerLink="/manager/manager-user" routerLinkActive="active-link">
+                <i class="fas fa-users fa-fw"></i>
+                <span>Quản lý tài khoản</span>
+            </a>
+        </li>
+        <li>
+            <!-- Sửa lại routerLink cho quản lý sản phẩm -->
+            <a routerLink="/manager/manager-product" routerLinkActive="active-link">
+                <i class="fas fa-tshirt fa-fw"></i>
+                <span>Quản lý sản phẩm</span>
+            </a>
+        </li>
+        <li>
+            <!-- Sửa lại routerLink cho xét duyệt trạng thái -->
+            <a routerLink="/manager/management-status" routerLinkActive="active-link">
+                <i class="fas fa-file-alt fa-fw"></i>
+                <span>Xét duyệt trạng thái</span>
+            </a>
+        </li>
+        <li class="logout-item">
+            <a (click)="logout()">
+                <i class="fas fa-sign-out-alt fa-fw"></i>
+                <span>Thoát</span>
+            </a>
+        </li>
+    </ul>
+</div>

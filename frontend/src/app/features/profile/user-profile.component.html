@@ -1,0 +1,99 @@
+<app-header></app-header>
+
+<div class="container mt-5">
+    <!-- Back Button -->
+    <button class="btn btn-back" [routerLink]="['/home']">
+        <i class="bi bi-arrow-left me-1"></i> Quay Lại
+    </button>
+
+    <h2>Thông tin tài khoản</h2>
+
+    <div class="form-wrapper">
+        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <!-- First Column -->
+                <div class="col-md-6">
+                    <!-- Trường Username (Không cho phép sửa) -->
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Tên đăng nhập</label>
+                        <input type="text" class="form-control" id="username" formControlName="username" readonly>
+                    </div>
+
+                    <!-- Trường Email -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" formControlName="email"
+                            autocomplete="username">
+                        <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched"
+                            class="text-danger">
+                            Vui lòng nhập email hợp lệ.
+                        </div>
+                    </div>
+
+                    <!-- Trường Họ và Tên -->
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label">Họ và Tên</label>
+                        <input type="text" class="form-control" id="fullName" formControlName="fullName"
+                            autocomplete="name">
+                    </div>
+
+                    <!-- Trường Số Điện Thoại -->
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Số Điện Thoại</label>
+                        <input type="tel" class="form-control" id="phone" formControlName="phone">
+                    </div>
+                </div>
+
+                <!-- Second Column -->
+                <div class="col-md-6">
+                    <!-- Trường Địa chỉ -->
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Địa chỉ</label>
+                        <input type="text" class="form-control" id="address" formControlName="address">
+                    </div>
+
+                    <!-- Trường Ngày sinh -->
+                    <div class="mb-3">
+                        <label for="birthDay" class="form-label">Ngày sinh</label>
+                        <input type="date" class="form-control" id="birthDay" formControlName="birthDay">
+                    </div>
+
+                    <!-- Trường Nhập mật khẩu mới -->
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                        <input type="password" class="form-control" id="newPassword" formControlName="newPassword"
+                            autocomplete="new-password">
+                    </div>
+
+                    <!-- Trường Nhập lại mật khẩu mới -->
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Xác nhận mật khẩu mới</label>
+                        <input type="password" class="form-control" id="confirmPassword"
+                            formControlName="confirmPassword" autocomplete="new-password">
+
+                        <div *ngIf="profileForm.errors?.['passwordMismatch']" class="text-danger">
+                            Mật khẩu không khớp.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary" [disabled]="profileForm.invalid || isSaving">
+                <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-1" role="status"
+                    aria-hidden="true"></span>
+                Lưu Thay Đổi
+            </button>
+            <div *ngIf="successMessage" class="alert alert-success mt-3">
+                {{ successMessage }}
+            </div>
+        </form>
+        <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+            {{ errorMessage }}
+        </div>
+    </div>
+</div>
+
+
+<app-footer></app-footer>

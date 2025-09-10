@@ -1,0 +1,106 @@
+<app-header></app-header>
+
+<div class="container order-history-container mt-4 mb-5">
+    <h2 class="text-center mb-4 page-title">Lịch sử đơn hàng</h2>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="text-center loading-indicator p-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Đang tải...</span>
+        </div>
+        <p class="mt-2">Đang tải đơn hàng của bạn...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="errorMessage && !isLoading" class="alert alert-danger" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i> {{ errorMessage }}
+        <button class="btn btn-sm btn-link text-danger float-end" [routerLink]="['/home']">Về trang chủ</button>
+    </div>
+
+    <!-- Main Content Area -->
+    <div *ngIf="!isLoading && !errorMessage">
+
+        <!-- Empty State -->
+        <div *ngIf="!ordersPage || ordersPage.empty" class="alert alert-info text-center empty-message">
+            Bạn chưa có đơn hàng nào. <a routerLink="/home" class="alert-link">Bắt đầu mua sắm ngay!</a>
+        </div>
+
+        <!-- Orders Table -->
+        <div *ngIf="ordersPage && !ordersPage.empty" class="table-responsive order-table-wrapper shadow-sm rounded">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light text-center">
+                    <tr>
+                        <th scope="col" class="order-id-col">Mã ĐH</th>
+                        <th scope="col" class="order-date-col">Ngày đặt</th>
+                        <th scope="col" class="order-total-col text-end">Tổng tiền</th>
+                        <th scope="col" class="order-status-col">Trạng thái</th>
+                        <th scope="col" class="order-action-col">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Lặp qua các đơn hàng trong trang hiện tại -->
+                    <tr *ngFor="let order of ordersPage.content" class="order-row">
+                        <td class="order-id-col text-center">
+                            <!-- Link đến trang chi tiết đơn hàng (nếu có) -->
+                            <a [routerLink]="['/orders', order.serialId]" class="fw-medium order-link">
+                                {{ order.orderCode || '#' + order.serialId }}
+                            </a>
+                        </td>
+                        <td class="order-date-col text-center">
+                            {{ order.orderDate | date:'dd/MM/yyyy HH:mm' }}
+                        </td>
+                        <td class="order-total-col text-end">
+                            {{ order.totalAmount | number:'1.0-0' }} đ
+                        </td>
+                        <td class="order-status-col text-center">
+                            <span class="badge rounded-pill" [ngClass]="getStatusBadgeClass(order.statusCode)">
+                                {{ order.statusDescription || order.statusCode || 'N/A' }}
+                            </span>
+                        </td>
+                        <td class="order-action-col text-center">
+                            <a [routerLink]="['/order-details', order.serialId]"
+                                class="btn btn-sm btn-outline-primary view-details-btn">
+                                <i class="fas fa-eye me-1"></i> Xem
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Controls -->
+        <nav *ngIf="totalPages > 1" aria-label="Order History Pagination"
+            class="mt-4 d-flex justify-content-center pagination-container">
+            <ul class="pagination pagination-sm shadow-sm">
+                <!-- Nút Trang Đầu -->
+                <li class="page-item" [class.disabled]="currentPage === 0">
+                    <a class="page-link" href="javascript:void(0)" aria-label="First" (click)="goToPage(0)"
+                        title="Trang đầu">««</a>
+                </li>
+                <!-- Nút Trang Trước -->
+                <li class="page-item" [class.disabled]="currentPage === 0">
+                    <a class="page-link" href="javascript:void(0)" aria-label="Previous" (click)="prevPage()"
+                        title="Trang trước">«</a>
+                </li>
+                <!-- Thông tin Trang -->
+                <li class="page-item disabled">
+                    <span class="page-link page-info">Trang {{ currentPage + 1 }} / {{ totalPages }}</span>
+                </li>
+                <!-- Nút Trang Sau -->
+                <li class="page-item" [class.disabled]="currentPage >= totalPages - 1">
+                    <a class="page-link" href="javascript:void(0)" aria-label="Next" (click)="nextPage()"
+                        title="Trang sau">»</a>
+                </li>
+                <!-- Nút Trang Cuối -->
+                <li class="page-item" [class.disabled]="currentPage >= totalPages - 1">
+                    <a class="page-link" href="javascript:void(0)" aria-label="Last" (click)="goToPage(totalPages - 1)"
+                        title="Trang cuối">»»</a>
+                </li>
+            </ul>
+        </nav>
+
+    </div> <!-- End Main Content Area -->
+
+</div> <!-- End Container -->
+
+<app-footer></app-footer>

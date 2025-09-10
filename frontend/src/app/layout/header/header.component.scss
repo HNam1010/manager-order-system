@@ -1,0 +1,121 @@
+header {
+  background-color: #211d2d;
+  color: white;
+}
+
+.navbar-collapse {
+  flex-grow: 0; /* Ngăn không cho nó tự động chiếm hết không gian còn lại */
+}
+
+.navbar {
+  background-color: transparent !important;
+}
+
+.navbar .navbar-brand {
+  color: rgb(173, 178, 203);
+}
+
+.navbar .navbar-nav .nav-link {
+  color: rgb(173, 178, 203);
+  border-radius: 18px;
+  padding: 8px 16px;
+  margin: 0 5px;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Kiểu cho mục đang được chọn (active) trong navbar */
+.navbar-nav .nav-item a.active-link {
+  background-color: #008c9e; /* Màu xanh teal giống ảnh */
+  color: #ffffff; /* Màu chữ trắng */
+  font-weight: 500; /* Chữ hơi đậm */
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+}
+// Target navbar khi nó bị thu gọn (dưới breakpoint 'lg')
+@media (max-width: 991.98px) {
+  // Ngưỡng breakpoint lg của Bootstrap 5
+  .navbar-collapse {
+
+    .navbar-nav {
+      // Ghi đè các thuộc tính có thể gây căn giữa hoặc đẩy lề tự động
+      margin-left: 0 !important; // Ghi đè ms-auto
+      margin-right: 0 !important;
+      width: 100%; // Đảm bảo ul chiếm toàn bộ chiều rộng
+
+      .nav-item {
+        width: 100%; // Đảm bảo mỗi item chiếm đủ rộng
+        text-align: left !important; 
+
+        .nav-link {
+          padding: 0.75rem 1rem !important; // Thêm padding để đẹp hơn và đồng đều
+          text-align: center !important; // Đảm bảo link cũng căn trái
+          width: 100%; // Link chiếm đủ rộng
+          display: block; // Đảm bảo link là block
+        }
+      }
+
+      // Xử lý Dropdown khi bị thu gọn
+      .nav-item.dropdown {
+        .dropdown-menu {
+          // Reset các style mặc định của dropdown khi nó không còn thả xuống nữa
+          position: static !important; // Hiển thị như một phần của luồng bình thường
+          float: none !important;
+          width: 100% !important; // Chiếm đủ rộng
+          margin-top: 0 !important; // Bỏ margin top
+          background-color: transparent !important; // Bỏ nền
+          border: 0 !important; // Bỏ viền
+          box-shadow: none !important; // Bỏ bóng đổ
+          padding-top: 0; // Bỏ padding trên của menu
+          padding-bottom: 0; // Bỏ padding dưới của menu
+
+          li {
+            a.dropdown-item {
+              padding-left: 2rem !important; // <<< Thụt lề các mục con trong dropdown
+              color: #adb5bd; // Màu chữ giống nav-link thường (hoặc màu bạn muốn)
+              text-align: left !important; // Đảm bảo căn trái
+
+              &:hover,
+              &:focus {
+                background-color: rgba(
+                  255,
+                  255,
+                  255,
+                  0.1
+                ); // Hiệu ứng hover nhẹ
+                color: #fff; // Màu chữ sáng hơn khi hover
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Tùy chọn: Style cho active link (nếu cần rõ hơn)
+.navbar-nav .nav-link.active-link {
+  // background-color: rgba(255, 255, 255, 0.15);
+  font-weight: 600; // Ví dụ làm đậm chữ
+  color: #ffffff; // Màu chữ trắng rõ
+}
+
+// Đảm bảo nền dropdown có màu tối khi mở trên màn hình lớn
+.navbar-dark .navbar-nav .dropdown-menu {
+  background-color: #343a40; // Màu nền tối cho dropdown menu
+  border: 1px solid rgba(255, 255, 255, 0.15); // Viền nhẹ
+  a.dropdown-item {
+    color: #adb5bd; // Màu chữ mặc định item
+    &:hover,
+    &:focus {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+  }
+}

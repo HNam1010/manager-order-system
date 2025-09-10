@@ -1,0 +1,150 @@
+ 
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: linear-gradient(135deg, #b682eb 0%, #7e01f4 100%);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);;
+  position: relative; // For positioning the back button
+
+  h2 {
+    color:  #333;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  // Back button styling
+  .btn-back {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: transparent;
+    border: 1px solid #6f42c1;
+    color: #300f6d;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    &:hover {
+      background-color: #6f42c1;
+      color:  #ffffff;
+    }
+
+    .bi-arrow-left {
+      font-size: 1rem;
+    }
+  }
+}
+
+ 
+.form-wrapper {
+  padding-bottom: 2rem;  
+}
+
+// Form styling
+form {
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .col-md-6 {
+    flex: 1 1 100%;
+    @media (min-width: 768px) {
+      flex: 1 1 calc(50% - 1rem);
+    }
+  }
+
+  .mb-3 {
+    label {
+      font-weight: 500;
+      color:  #000000;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .form-control {
+      border: 1px solid #ced4da;
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-size: 1rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+      &:focus {
+        border-color: #6f42c1;
+        box-shadow: 0 0 0 0.2rem rgba(#6f42c1, 0.25);
+        outline: none;
+      }
+
+      &[readonly] {
+        background-color: #e9ecef;
+        cursor: not-allowed;
+      }
+    }
+
+    .text-danger {
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      color: #dc3545;
+    }
+  }
+
+  // Button styling
+  .btn-primary {
+    color: #4b2d7f;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(
+      90deg,
+      rgb(105, 244, 181),
+      rgb(1, 252, 139)
+    );
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: background-color 0.4s ease, transform 0.1s ease;
+    display: block;
+    margin: 1rem auto;
+
+    &:hover {
+      background: rgb(42, 243, 52);;
+      transform: translateY(-2px);
+    }
+
+    &:disabled {
+      background-color: #b0a2d8;
+      cursor: not-allowed;
+    }
+
+    .spinner-border {
+      vertical-align: middle;
+    }
+  }
+}
+
+// Alert styling
+.alert {
+  border-radius: 8px;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+
+  &.alert-success {
+    background-color: #d4edda;
+    color: #359b4c;
+    border-color: #c3e6cb;
+  }
+
+  &.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
+  }
+}

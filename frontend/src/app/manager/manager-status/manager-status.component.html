@@ -1,0 +1,189 @@
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-12 col-md-2 sidebar-container-wrapper">
+            <app-manager-sidebar></app-manager-sidebar>
+        </div>
+
+        <!-- Nội dung chính -->
+        <div class="col-12 col-md-10 content">
+            <h2 class="page-title mb-4">QUẢN LÝ ĐƠN HÀNG</h2>
+
+            <!-- Bộ lọc -->
+            <div class="row mb-3 filter-section">
+                <div class="col-md-4">
+                    <label for="statusFilter" class="form-label">Lọc theo trạng thái:</label>
+                    <!--  sự kiện (change) -->
+                    <select id="statusFilter" class="form-select form-select-sm"
+                        (change)="onStatusFilterChange($event)">
+                        <option [ngValue]="null">-- Tất cả trạng thái --</option>
+                        <!-- Value là status.id (number) -->
+                        <option *ngFor="let status of availableStatuses" [value]="status.id">
+                            {{ status.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Loading & Error -->
+            <div *ngIf="isLoading && !orders.length" class="text-center p-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Đang tải...</span>
+                </div>
+                <p class="mt-2">Đang tải đơn hàng...</p>
+            </div>
+            <div *ngIf="errorMessage && !isLoading" class="alert alert-danger">{{ errorMessage }}</div>
+
+            <!-- Bảng dữ liệu đơn hàng -->
+            <div *ngIf="!isLoading || orders.length > 0" class="table-responsive shadow-sm rounded">
+                <table class="table table-bordered table-hover custom-table mb-0">
+                    <thead class="table-dark text-center align-middle">
+                        <tr>
+                            <th scope="col" class="stt">STT</th>
+                            <th scope="col" class="ma-dh">Mã ĐH</th>
+                            <th scope="col" class="khach-hang">Khách hàng</th>
+                            <th scope="col" class="ngay-dat">Ngày đặt</th>
+                            <th scope="col" class="tong-tien text-end">Tổng tiền (VNĐ)</th>
+                            <th scope="col" class="phuong-thuc-tt text-center">Phương thức TT</th>
+                            <th scope="col" class="trang-thai text-center">Trạng thái</th>
+                            <th scope="col" class="hanh-dong-cell text-center">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="!isLoading && (!orders || orders.length === 0)">
+                            <td colspan="8" class="text-center text-muted fst-italic p-3">
+                                Không có đơn hàng nào. <!-- Sửa text -->
+                            </td>
+                        </tr>
+                        <tr *ngFor="let order of orders; let i = index">
+                            <th scope="row" class="stt-cell text-center align-middle">
+                                {{ (currentPage * pageSize) + i + 1 }}
+                            </th>
+                            <!-- SỬA: Hiển thị orderCode hoặc serialId -->
+                            <td class="ma-dh-cell align-middle text-center">
+                                {{ order.orderCode || '#' + order.serialId }}
+                            </td>
+                            <!-- SỬA: Hiển thị customerName -->
+                            <td class="khach-hang-cell align-middle">{{ order.customerName || 'N/A' }}</td>
+                            <td class="ngay-dat-cell align-middle text-center">{{ order.orderDate | date:'dd/MM/yyyy HH:mm' }}</td>
+                            <!-- SỬA: Hiển thị totalAmount -->
+                            <td class="tong-tien-cell text-end align-middle">{{ order.totalAmount | number:'1.0-0'}}
+                            </td>
+                            <td class="phuong-thuc-tt-cell align-middle text-center">
+                                {{ getPaymentMethodDisplay(order.paymentMethod) || 'N/A' }}
+                            </td>
+                            <td class="trang-thai-cell align-middle text-center">
+                                <span class="badge rounded-pill" [ngClass]="getStatusBadgeClass(order.statusCode)">
+                                    {{ order.statusDescription || order.statusCode || 'N/A' }}
+                                </span>
+                            </td>
+                            <td class="hanh-dong-cell align-middle text-center">
+                                <!-- SỬA: Gọi canUpdateStatus với statusCode -->
+                                <button class="btn btn-sm btn-icon btn-edit" title="Cập nhật trạng thái"
+                                    *ngIf="canUpdateStatus(order.statusCode)"
+                                    (click)="openUpdateStatusModal(updateStatusModalContent, order)"
+                                    [disabled]="isLoading">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </button>
+                                <span *ngIf="!canUpdateStatus(order.statusCode)" class="text-muted fst-italic">
+                                    -
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Phân trang (SỬA: Dùng totalPagesGetter) -->
+            <nav *ngIf="!isLoading && totalPagesGetter > 1" aria-label="Order pagination"
+                class="mt-4 d-flex justify-content-center pagination-container">
+                <ul class="pagination pagination-sm shadow-sm">
+                    <li class="page-item" [class.disabled]="currentPage === 0">
+                        <a class="page-link" href="javascript:void(0)" (click)="goToPage(0)">««</a>
+                    </li>
+                    <li class="page-item" [class.disabled]="currentPage === 0">
+                        <a class="page-link" href="javascript:void(0)" (click)="prevPage()">«</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">Trang {{ currentPage + 1 }} / {{ totalPagesGetter }}</span>
+                    </li>
+                    <li class="page-item" [class.disabled]="currentPage >= totalPagesGetter - 1">
+                        <a class="page-link" href="javascript:void(0)" (click)="nextPage()">»</a>
+                    </li>
+                    <li class="page-item" [class.disabled]="currentPage >= totalPagesGetter - 1">
+                        <a class="page-link" href="javascript:void(0)" (click)="goToPage(totalPagesGetter - 1)">»»</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <!-- Footer -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <app-footer></app-footer>
+        </div>
+    </div>
+</div>
+
+<!--hiện form chi tiết đơn hàng-->
+<ng-template #updateStatusModalContent let-modal>
+    <div class="modal-header">
+        <!-- Sửa lại để hiển thị orderCode hoặc serialId -->
+        <h4 class="modal-title" id="modal-basic-title">Cập nhật trạng thái đơn hàng #{{ editingOrder?.orderCode ??
+            editingOrder?.serialId }}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <p>Trạng thái hiện tại: <strong>{{ editingOrder?.statusDescription }}</strong></p>
+
+        <hr>
+        <h6>Chi tiết Sản phẩm: </h6>
+        <ng-container *ngIf="editingOrder as order">
+            <div *ngIf="order.items && order.items.length > 0" class="order-items-modal mb-3 table-responsive">
+                <table class="table table-sm table-striped table-bordered mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Tên Sản phẩm</th>
+                            <th class="text-center">SL</th>
+                            <th class="text-end">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Sử dụng biến 'order' đã được đảm bảo không null -->
+                        <tr *ngFor="let item of order.items">
+                            <td>{{ item.productName }}</td>
+                            <td class="text-center">{{ item.quantity }}</td>
+                            <td class="text-end">{{ item.totalPrice | number:'1.0-0' }} đ</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Hiển thị nếu không có items (vẫn dùng biến 'order') -->
+            <div *ngIf="!order.items || order.items.length === 0" class="text-muted small mb-3">
+                (Không có thông tin chi tiết sản phẩm)
+            </div>
+        </ng-container>
+
+        <hr>
+
+        <div *ngIf="editingOrder">
+            <label for="newStatus" class="form-label">Chọn trạng thái mới:</label>
+            <select class="form-select" id="newStatus" [(ngModel)]="selectedNewStatusId" name="newStatus" required>
+                <option [ngValue]="null" disabled>-- Chọn trạng thái --</option>
+                <option *ngFor="let status of getValidNextStatuses(editingOrder?.statusCode)" [value]="status.id">
+                    {{ status.name }}
+                </option>
+            </select>
+        </div>
+
+        <div *ngIf="modalErrorMessage" class="alert alert-danger mt-2">{{ modalErrorMessage }}</div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Hủy</button>
+        <button type="button" class="btn btn-primary" (click)="executeUpdateStatus()"
+            [disabled]="selectedNewStatusId === null || isSaving">
+            <span *ngIf="isSaving" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            {{ isSaving ? 'Đang lưu...' : 'Lưu thay đổi' }}
+        </button>
+    </div>
+</ng-template>

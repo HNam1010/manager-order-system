@@ -1,0 +1,118 @@
+.table-header {
+  th {
+    // Áp dụng chung cho các cột nếu cần
+    padding: 0.75rem 0.5rem;
+  }
+
+  .col-product {
+    width: 55%;
+    text-align: left;
+    padding-left: 1rem; // tương đương ps-3
+  }
+
+  .col-price {
+    width: 15%;
+  }
+
+  .col-quantity {
+    width: 10%;
+  }
+
+  .col-total {
+    width: 20%;
+    text-align: right;
+    padding-right: 1rem; // tương đương pe-3
+  }
+}
+// Style cho nút quay lại
+.back-button {
+  background-color: transparent; // Màu xám tối hơn của secondary
+  color: #ffffff;
+
+  &:hover,
+  &:focus {
+    background-color: #382b2a; // Màu xám tối hơn của secondary
+    color: white;
+    border-color: #535557; // Viền tối hơn
+  }
+
+  .fas {
+    margin-right: 0.3rem; // Giảm khoảng cách bên phải icon
+  }
+}
+.page-header-container {
+  // Có thể thêm border-bottom hoặc style khác nếu muốn
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+}
+
+.page-header {
+  h1 {
+    font-weight: 600;
+    font-size: 1.8rem;
+    color: #333;
+  }
+}
+
+.back-button {
+  // Style tùy chỉnh cho nút
+  &:hover,
+  &:focus {
+    background-color: #6c757d;
+    color: white;
+    border-color: #5c636a;
+  }
+  .fas {
+    margin-right: 0.3rem;
+  }
+}
+
+.header-spacer {
+  visibility: hidden;
+}
+
+.order-items-table {
+  // Style chung cho bảng nếu cần
+  td,
+  th {
+    vertical-align: middle; // Căn giữa nội dung trong ô theo chiều dọc
+  }
+
+  .item-image-container {
+    width: 60px; // Đặt chiều rộng cố định cho khung ảnh
+    height: 60px; // Đặt chiều cao cố định cho khung ảnh
+    overflow: hidden; // Ẩn phần ảnh thừa ra ngoài khung
+    border-radius: 0.25rem; // Bo góc nhẹ cho khung (tùy chọn)
+    background-color: #f8f9fa; // Màu nền nhẹ cho khung (tùy chọn)
+    display: flex; // Dùng flex để căn giữa ảnh nếu ảnh nhỏ hơn khung
+    align-items: center; // Căn giữa ảnh theo chiều dọc
+    justify-content: center; // Căn giữa ảnh theo chiều ngang
+    border: 1px solid #dee2e6; // Thêm viền nhẹ (tùy chọn)
+  }
+
+  .item-image {
+    display: block; // Đảm bảo ảnh là block element
+    max-width: 100%; // Chiều rộng tối đa bằng khung
+    max-height: 100%; // Chiều cao tối đa bằng khung
+    width: auto; // Để trình duyệt tự tính chiều rộng dựa trên chiều cao
+    height: auto; // Để trình duyệt tự tính chiều cao dựa trên chiều rộng
+    object-fit: contain; // Thu nhỏ ảnh để vừa khung, giữ tỷ lệ, không cắt xén
+  }
+
+  .item-info {
+    // Style cho phần text bên cạnh ảnh
+    .item-name {
+      font-size: 0.9rem;
+      line-height: 1.3;
+    }
+    small {
+      font-size: 0.8rem;
+    }
+  }
+
+  // Điều chỉnh lại cột giá/số lượng/thành tiền nếu cần
+  td.text-end,
+  th.text-end {
+    padding-right: 1rem; // Tăng padding phải cho dễ nhìn
+  }
+}

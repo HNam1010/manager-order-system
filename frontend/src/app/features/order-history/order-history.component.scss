@@ -1,0 +1,116 @@
+.order-history-container {
+    min-height: calc(100vh - 150px); // Đảm bảo nội dung đủ cao
+}
+
+.page-title {
+    font-weight: 600;
+}
+
+.loading-indicator p {
+    margin-top: 0.5rem;
+    color: #6c757d;
+}
+
+.empty-message {
+    margin-top: 2rem;
+}
+
+.order-table-wrapper {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+
+.table {
+    thead th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    tbody td,
+    tbody th {
+        vertical-align: middle;
+    }
+
+    .order-link {
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    // Định nghĩa chiều rộng cột (tùy chọn)
+    .order-id-col {
+        width: 15%;
+    }
+
+    .order-date-col {
+        width: 20%;
+    }
+
+    .order-total-col {
+        width: 20%;
+    }
+
+    .order-status-col {
+        width: 20%;
+    }
+
+    .order-action-col {
+        width: 25%;
+    }
+
+    .badge {
+        font-size: 0.8em;
+        padding: 0.4em 0.6em;
+    }
+
+    .view-details-btn {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.6rem;
+
+        i {
+            font-size: 0.8em;
+        }
+    }
+}
+
+
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .table thead th {
+        font-size: 0.75rem;
+    }
+
+    .table tbody td,
+    .table tbody th {
+        font-size: 0.85rem;
+        white-space: normal; // Cho phép xuống dòng trên màn nhỏ
+    }
+
+    .order-date-col {
+        display: none; // Ẩn cột ngày trên màn nhỏ nếu cần
+    }
+
+    .order-total-col {
+        width: 25%;
+    }
+
+    .order-status-col {
+        width: 25%;
+    }
+
+    .order-action-col {
+        width: 30%;
+    }
+
+    .order-id-col {
+        width: 20%;
+    }
+}

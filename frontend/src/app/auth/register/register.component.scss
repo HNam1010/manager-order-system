@@ -1,0 +1,247 @@
+// Container
+.container {
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  flex-direction: column;
+}
+
+// Form
+.register-form {
+  max-width: 550px;
+  width: 100%;
+  background-color: rgba(12, 12, 55, 0.5);
+  border-radius: 20px;
+  padding: 40px 30px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+// Header
+.register-header {
+  text-align: center;
+  color: rgb(105, 244, 181);
+  margin-bottom: 30px;
+  font-weight: 700;
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+// Form Group
+.form-group {
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+// Input Wrapper
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+}
+
+// Form Control
+.form-control {
+  background-color: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5) !important;
+  color: white !important;
+  border-radius: 0 !important;
+  padding: 10px 0 10px 30px !important;
+  width: 100%;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.form-control:focus {
+  color: white !important;
+  background-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: rgb(105, 244, 181) !important;
+  transform: translateY(-2px);
+}
+
+// Placeholder
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  opacity: 1;
+}
+
+// Password Field
+.password-field {
+  .form-control {
+      padding-right: 2.5rem !important;
+  }
+
+  .password-toggle {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      color: rgb(105, 244, 181);
+      cursor: pointer;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+  }
+
+  .password-toggle:hover {
+      color: rgb(42, 243, 52);
+  }
+}
+
+// Checkbox
+.form-check.checkbox-text {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 20px;
+  flex-wrap: nowrap; // Ngăn xuống dòng cho toàn bộ form-check
+}
+
+.form-check-input {
+  margin-right: 10px;
+  background-color: transparent;
+  border: 2px solid rgb(60, 146, 183);
+  width: 1.2em;
+  height: 1.2em;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0; // Ngăn checkbox co lại
+}
+
+.form-check-input:checked {
+  background-color: rgb(233, 66, 178);
+  border-color: rgb(233, 66, 178);
+}
+
+.form-check-input:focus {
+  box-shadow: none;
+  border-color: rgb(105, 244, 181);
+}
+
+.form-check-label {
+  color: rgb(42, 243, 52) !important;
+  font-size: 0.9rem;
+  white-space: nowrap; // Ngăn label xuống dòng
+  overflow: hidden; // Ẩn nội dung tràn nếu cần
+  text-overflow: ellipsis; // Thêm dấu ... nếu nội dung quá dài
+}
+
+.terms-link {
+  color: rgb(105, 244, 181);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.terms-link:hover {
+  text-decoration: underline;
+  color: rgb(42, 243, 52);
+}
+
+// Register Button
+.register-button {
+  background: linear-gradient(to right, rgb(255, 105, 180), rgb(147, 112, 219));
+  color: white;
+  border-radius: 50px;
+  width: 100%;
+  padding: 12px 0;
+  margin-top: 15px;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  text-transform: uppercase;
+}
+
+.register-button:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+.register-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+// Error Message
+.alert {
+  font-size: 0.9rem;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+// Login Link
+.text-center {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 0.9rem;
+  margin-top: 15px;
+}
+
+.login-link {
+  color: rgb(105, 244, 181);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.login-link:hover {
+  color: rgb(42, 243, 52);
+  text-decoration: underline;
+}
+.txtin4{
+  color:antiquewhite;
+}
+// Responsive
+@media (max-width: 768px) {
+  .container {
+      padding-top: 10px;
+      padding-bottom: 10px;
+  }
+
+  .register-form {
+      max-width: 90%;
+      padding: 20px 15px;
+  }
+
+  .register-header {
+      font-size: 1.5rem;
+  }
+
+  .form-group {
+      margin-bottom: 10px;
+  }
+
+  .form-check-label {
+      white-space: normal; // Cho phép xuống dòng trên mobile nếu cần
+  }
+
+  .register-button {
+      padding: 10px 0;
+      font-size: 0.9rem;
+  }
+}
