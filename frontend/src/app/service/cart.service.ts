@@ -13,6 +13,7 @@ import { StorageService } from '../core/services/storage.service';
 import { jwtDecode } from 'jwt-decode'; // <-- Import jwt_decode
 
 const CART_API_URL = 'http://localhost:8080/api/v1/cart';
+const CART_MERGE = 'http://localhost:8080/api/v1/cart/merge';
 
 @Injectable({
   providedIn: 'root',
@@ -234,11 +235,7 @@ export class CartService {
     const headers = this.createHeaders().set('X-Guest-ID', guestId); // Thêm X-Guest-ID vào đây nữa
 
     return this.http
-      .post<ApiResponse<void>>(
-        `http://localhost:8080/api/v1/cart/merge`,
-        {},
-        { headers }
-      )
+      .post<ApiResponse<void>>(`CART_MERGE`, {}, { headers })
       .pipe(
         tap((response) => {
           if (response && response.success) {

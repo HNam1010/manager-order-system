@@ -258,7 +258,7 @@ export class ProductService {
 
   /** Hàm xử lý lỗi HTTP chung - Cải thiện để ưu tiên lỗi từ map */
   private handleError(error: HttpErrorResponse | Error): Observable<never> {
-    // <-- Chấp nhận cả Error từ map
+    // Chấp nhận cả Error từ map
     let errorMessage = 'Đã xảy ra lỗi không xác định!';
 
     // Ưu tiên lấy message từ Error object (được ném từ các hàm map ở trên)
