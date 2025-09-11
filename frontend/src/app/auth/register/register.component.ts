@@ -6,12 +6,12 @@ import { Router, RouterLink } from '@angular/router'; // Giữ RouterLink
 import { Subscription } from 'rxjs';
 
 // Import các service cần thiết
-import { AuthService } from '../../service/auth.service'; // Đảm bảo đúng đường dẫn
+import { AuthService } from '../../service/auth.service'; 
 
 // Import layout components
 import { FooterComponent } from '../../layout/footer/footer.component';
 import { HeaderComponent } from '../../layout/header/header.component';
-import { RegisterRequest } from '../../models/auth.model'; // Import DTO
+import { RegisterRequest } from '../../models/auth.model'; 
 
 //Hàm xác thực tùy chỉnh để khớp mật khẩu
 export function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
@@ -65,9 +65,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         }, { validators: passwordMatchValidator }); // Áp dụng custom validator ở cấp FormGroup
     }
 
-    ngOnInit(): void {
-        
-    }
+    ngOnInit(): void {}
 
     ngOnDestroy(): void {
         this.registerSubscription?.unsubscribe();

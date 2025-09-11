@@ -16,7 +16,7 @@ export function MustMatch(controlName: string, matchingControlName: string): Val
     }
 
     // đặt lỗi trên matchingControl nếu xác thực không thành công
-    if (control.value !== matchingControl.value) {
+    if (control?.value !== matchingControl?.value) {
       matchingControl.setErrors({ mustMatch: true });
       return { mustMatch: true };
     } else {

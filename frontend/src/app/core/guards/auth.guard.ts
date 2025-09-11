@@ -12,6 +12,6 @@ export const authGuard: CanActivateFn = (route, state) => {
     // Chưa đăng nhập, điều hướng về trang login
     console.log('AuthGuard: User not logged in, redirecting to /login');
     router.navigate(['/home'], { queryParams: { returnUrl: state.url } });
-    return false; // Chặn truy cập
+    return false; 
   }
 };

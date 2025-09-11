@@ -17,11 +17,10 @@ import { HeaderComponent } from '../../layout/header/header.component';
 @Component({
   selector: 'app-login',
   standalone: true,
-  // THÊM: CommonModule, ReactiveFormsModule vào imports
   imports: [
-    CommonModule,         // Cho *ngIf, *ngFor,...
-    ReactiveFormsModule,  // Cho formGroup
-    RouterLink,           // Giữ lại cho link Đăng ký
+    CommonModule,         
+    ReactiveFormsModule,  
+    RouterLink,           
     RouterModule,
     HeaderComponent,
     FooterComponent
@@ -160,7 +159,4 @@ export class LoginComponent implements OnInit, OnDestroy {
       eyeIcon.classList.add('fa-eye-slash');
     }
   }
-
-
-
 }

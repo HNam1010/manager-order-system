@@ -23,7 +23,7 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state) =
         map((user: UserInfo | null) => {
             console.log('[RoleGuard] Current user:', user); // Log thông tin user
 
-            if (!user || !user.roles || user.roles.length === 0) {
+            if (!user || !user?.roles || user?.roles?.length === 0) {
                 console.log('[RoleGuard] No user or roles found. Redirecting to login.');
                 router.navigate(['/login']); // Điều hướng đến login nếu chưa đăng nhập hoặc không có roles
                 return false;
@@ -33,8 +33,8 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state) =
             const hasRequiredRole = requiredRoles.some(requiredRole =>
                 user.roles.some((userRole: string) => {
                     // So sánh không phân biệt hoa thường và kiểm tra cả tiền tố ROLE_
-                    const userRoleUpper = userRole.toUpperCase();
-                    const requiredRoleUpper = requiredRole.toUpperCase();
+                    const userRoleUpper = userRole?.toUpperCase();
+                    const requiredRoleUpper = requiredRole?.toUpperCase();
                     const requiredRoleWithPrefixUpper = ('ROLE_' + requiredRole).toUpperCase();
                     return userRoleUpper === requiredRoleUpper || userRoleUpper === requiredRoleWithPrefixUpper;
                 })

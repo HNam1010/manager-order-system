@@ -68,7 +68,7 @@ export class StorageService {
   public getUser(): UserInfo | null {
     const storage = this.getStorage();
     if (storage) {
-      const user = storage.getItem(USER_KEY);
+      const user = storage?.getItem(USER_KEY);
       if (user) {
         try {
           const parsedUser = JSON.parse(user) as UserInfo;

@@ -140,13 +140,13 @@ export class BankTransferPaymentComponent implements OnInit, OnDestroy {
   loadOrderDetails(id: number, guestToken: string | null): Observable<OrderResponse | null> {
     let orderObservable: Observable<OrderResponse>;
 
-    if (this.storageService.isLoggedIn()) {
+    if (this.storageService?.isLoggedIn()) {
       console.log("BankTransfer: User logged in, calling getOrderByIdAndUser...");
       //CHỈ TRUYỀN orderId 
-      orderObservable = this.orderService.getOrderByIdAndUser(id);
+      orderObservable = this.orderService?.getOrderByIdAndUser(id);
     } else if (guestToken) {
       console.log("BankTransfer: Guest user with token, calling getGuestOrderByIdAndToken...");
-      orderObservable = this.orderService.getGuestOrderByIdAndToken(id, guestToken);
+      orderObservable = this.orderService?.getGuestOrderByIdAndToken(id, guestToken);
     } else {
       console.error("BankTransfer: Guest user missing order token.");
       this.handleLoadingError('Thiếu mã truy cập đơn hàng.');
@@ -222,7 +222,7 @@ export class BankTransferPaymentComponent implements OnInit, OnDestroy {
   // Lấy class cho badge trạng thái (Dựa trên statusCode)
   getStatusBadgeClass(statusCode: string | undefined): string {
     if (!statusCode) return 'bg-secondary text-dark'; // Mặc định
-    switch (statusCode.toUpperCase()) { // Dùng toUpperCase để đảm bảo khớp
+    switch (statusCode?.toUpperCase()) { // Dùng toUpperCase để đảm bảo khớp
       case 'PENDING_CONFIRMATION': return 'text-bg-warning';
       case 'AW_BANK_TRANSFER': return 'text-bg-info'; // Màu cho chờ chuyển khoản
       case 'CONFIRMED': return 'text-bg-primary';
